@@ -1,21 +1,21 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class ReportCommand extends CommandAction {
-  private BitQuest bitQuest;
+  private CrownQuest crownQuest;
 
-  public ReportCommand(BitQuest plugin) {
-    bitQuest = plugin;
+  public ReportCommand(CrownQuest plugin) {
+    crownQuest = plugin;
   }
 
   public boolean run(
       CommandSender sender, Command cmd, String label, String[] args, Player player) {
     // TODO: Rewrite for Discord
-    //    if (bitQuest.slackBotSession != null && bitQuest.slackBotSession.isConnected()) {
+    //    if (crownQuest.slackBotSession != null && crownQuest.slackBotSession.isConnected()) {
     //      if (args.length >= 2) {
     //        String badPlayer = args[0];
     //        String message = args[1];
@@ -24,8 +24,8 @@ public class ReportCommand extends CommandAction {
     //          message += args[i];
     //        }
     //
-    //        if (BitQuest.REDIS.exists("uuid:" + badPlayer)) {
-    //          String uuid = BitQuest.REDIS.get("uuid:" + badPlayer);
+    //        if (CrownQuest.REDIS.exists("uuid:" + badPlayer)) {
+    //          String uuid = CrownQuest.REDIS.get("uuid:" + badPlayer);
     //          String slackMessage =
     //              "Player "
     //                  + player.getName()
@@ -36,15 +36,15 @@ public class ReportCommand extends CommandAction {
     //                  + ") because: "
     //                  + message;
     //          SlackChannel channel =
-    //              bitQuest.slackBotSession.findChannelByName(BitQuest.SLACK_BOT_REPORTS_CHANNEL);
+    //              crownQuest.slackBotSession.findChannelByName(CrownQuest.SLACK_BOT_REPORTS_CHANNEL);
     //          if (channel != null) {
-    //            bitQuest.slackBotSession.sendMessage(channel, slackMessage);
+    //            crownQuest.slackBotSession.sendMessage(channel, slackMessage);
     //            player.sendMessage(
     //                ChatColor.GREEN
     //                    + "The report has been send to a moderator. Thanks for making "
     //                    + ChatColor.GOLD
     //                    + ChatColor.BOLD
-    //                    + "Bit"
+    //                    + "Crw"
     //                    + ChatColor.GRAY
     //                    + ChatColor.BOLD
     //                    + "Quest"

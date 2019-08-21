@@ -1,7 +1,7 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
-import com.bitquest.bitquest.User;
+import com.crownquest.crownquest.CrownQuest;
+import com.crownquest.crownquest.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,10 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class SendCommand extends CommandAction {
-  private BitQuest bitQuest;
+  private CrownQuest crownQuest;
 
-  public SendCommand(BitQuest plugin) {
-    bitQuest = plugin;
+  public SendCommand(CrownQuest plugin) {
+    crownQuest = plugin;
   }
 
   public boolean run(
@@ -27,7 +27,7 @@ public class SendCommand extends CommandAction {
         return false;
       }
       final Long amount = Long.parseLong(args[0]);
-      final Long sat = amount * BitQuest.DENOMINATION_FACTOR;
+      final Long sat = amount * CrownQuest.DENOMINATION_FACTOR;
 
       if (amount != 0 && amount <= MAX_SEND) {
 
@@ -35,23 +35,23 @@ public class SendCommand extends CommandAction {
           if (onlinePlayer.getName().equalsIgnoreCase(args[1])) {
             if (!args[1].equalsIgnoreCase(player.getDisplayName())) {
               try {
-                final User user = new User(bitQuest.db_con, player.getUniqueId());
+                final User user = new User(crownQuest.db_con, player.getUniqueId());
 
                 Long balance = user.wallet.getBalance(0);
 
                 if (balance >= sat) {
-                  User user_tip = new User(bitQuest.db_con, onlinePlayer.getUniqueId());
+                  User user_tip = new User(crownQuest.db_con, onlinePlayer.getUniqueId());
                   // TODO: Pay to user address
                   if (user.wallet.payment(user_tip.wallet.address, sat)) {
-                    bitQuest.updateScoreboard(onlinePlayer);
-                    bitQuest.updateScoreboard(player);
+                    crownQuest.updateScoreboard(onlinePlayer);
+                    crownQuest.updateScoreboard(player);
                     player.sendMessage(
                         ChatColor.GREEN
                             + "You sent "
                             + ChatColor.LIGHT_PURPLE
                             + amount
                             + " "
-                            + BitQuest.DENOMINATION_NAME
+                            + CrownQuest.DENOMINATION_NAME
                             + ChatColor.GREEN
                             + " to user "
                             + ChatColor.BLUE
@@ -62,7 +62,7 @@ public class SendCommand extends CommandAction {
                             + ChatColor.LIGHT_PURPLE
                             + amount
                             + " "
-                            + BitQuest.DENOMINATION_NAME
+                            + CrownQuest.DENOMINATION_NAME
                             + ChatColor.GREEN
                             + " from user "
                             + ChatColor.BLUE
@@ -82,7 +82,7 @@ public class SendCommand extends CommandAction {
         }
       } else {
         player.sendMessage(
-            "Minimum tip is 1 " + BitQuest.DENOMINATION_NAME + ". Maximum is " + MAX_SEND);
+            "Minimum tip is 1 " + CrownQuest.DENOMINATION_NAME + ". Maximum is " + MAX_SEND);
       }
     } else {
       return false;

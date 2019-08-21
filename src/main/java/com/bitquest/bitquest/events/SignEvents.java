@@ -1,6 +1,6 @@
-package com.bitquest.bitquest.events;
+package com.crownquest.crownquest.events;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import java.io.IOException;
 import java.text.ParseException;
 import org.bukkit.ChatColor;
@@ -11,10 +11,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
 public class SignEvents implements Listener {
-  BitQuest bitQuest;
+  CrownQuest crownQuest;
 
-  public SignEvents(BitQuest plugin) {
-    bitQuest = plugin;
+  public SignEvents(CrownQuest plugin) {
+    crownQuest = plugin;
   }
 
   @EventHandler
@@ -34,7 +34,7 @@ public class SignEvents implements Listener {
           && signText.substring(signText.length() - 1).equals(specialCharacter)) {
 
         final String name = signText.substring(1, signText.length() - 1);
-        bitQuest.claimLand(name, chunk, player);
+        crownQuest.claimLand(name, chunk, player);
       }
 
     } else if (event.getBlock().getWorld().getName().endsWith("_end")) {

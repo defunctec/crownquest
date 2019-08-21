@@ -1,6 +1,6 @@
-package com.bitquest.bitquest.events;
+package com.crownquest.crownquest.events;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.ChatColor;
@@ -12,10 +12,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatEvents implements Listener {
 
-  BitQuest bitQuest;
+  CrownQuest crownQuest;
 
-  public ChatEvents(BitQuest plugin) {
-    bitQuest = plugin;
+  public ChatEvents(CrownQuest plugin) {
+    crownQuest = plugin;
   }
 
   @EventHandler
@@ -65,7 +65,7 @@ public class ChatEvents implements Listener {
     if (message.endsWith("!")) {
       if (message.length() > 1 && message.substring(1, message.length()).trim().length() >= 1) {
         event.setMessage(message);
-        bitQuest.sendDiscordMessage(sender.getName()+": "+message);
+        crownQuest.sendDiscordMessage(sender.getName()+": "+message);
         // Spigot replaces "%1$s" with the player's name and "%2$s" with the original message.
         event.setFormat(
             ChatColor.BLUE.toString()

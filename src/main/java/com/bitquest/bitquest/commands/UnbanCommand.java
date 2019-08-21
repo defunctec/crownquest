@@ -1,6 +1,6 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,9 +11,9 @@ public class UnbanCommand extends CommandAction {
       CommandSender sender, Command cmd, String label, String[] args, Player player) {
     if (args.length == 1) {
       String playerName = args[0];
-      if (BitQuest.REDIS.exists("uuid:" + playerName)) {
-        String uuid = BitQuest.REDIS.get("uuid:" + playerName);
-        BitQuest.REDIS.srem("banlist", uuid);
+      if (CrownQuest.REDIS.exists("uuid:" + playerName)) {
+        String uuid = CrownQuest.REDIS.get("uuid:" + playerName);
+        CrownQuest.REDIS.srem("banlist", uuid);
         sender.sendMessage(
             ChatColor.GREEN
                 + "Player "

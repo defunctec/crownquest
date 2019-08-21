@@ -1,25 +1,25 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
-import com.bitquest.bitquest.LegacyWallet;
-import com.bitquest.bitquest.User;
+import com.crownquest.crownquest.CrownQuest;
+import com.crownquest.crownquest.LegacyWallet;
+import com.crownquest.crownquest.User;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class UpgradeWallet extends CommandAction {
-  private BitQuest bitQuest;
+  private CrownQuest crownQuest;
 
-  public UpgradeWallet(BitQuest plugin) {
-    bitQuest = plugin;
+  public UpgradeWallet(CrownQuest plugin) {
+    crownQuest = plugin;
   }
 
   public boolean run(
       CommandSender sender, Command cmd, String label, String[] args, Player player) {
     LegacyWallet legacyWallet = new LegacyWallet(player.getUniqueId().toString());
     try {
-      User user = new User(bitQuest.db_con, player.getUniqueId());
+      User user = new User(crownQuest.db_con, player.getUniqueId());
       LegacyWallet legacy_wallet = new LegacyWallet(player.getUniqueId().toString());
 
       Long balance = legacy_wallet.getBalance(2);

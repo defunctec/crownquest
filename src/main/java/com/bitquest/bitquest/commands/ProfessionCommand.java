@@ -1,16 +1,16 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class ProfessionCommand extends CommandAction {
-  private BitQuest bitQuest;
+  private CrownQuest crownQuest;
 
-  public ProfessionCommand(BitQuest plugin) {
-    this.bitQuest = plugin;
+  public ProfessionCommand(CrownQuest plugin) {
+    this.crownQuest = plugin;
   }
 
   public boolean run(
@@ -18,7 +18,7 @@ public class ProfessionCommand extends CommandAction {
     if (args.length == 1) {
       String profession = args[0];
       if (profession.equals("rogue")) {
-        bitQuest.REDIS.set("profession:" + player.getUniqueId(), profession);
+        crownQuest.REDIS.set("profession:" + player.getUniqueId(), profession);
       }
     } else {
       player.sendMessage(ChatColor.RED + "Wrong argument count !");

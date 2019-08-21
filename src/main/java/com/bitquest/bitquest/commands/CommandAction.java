@@ -1,4 +1,4 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

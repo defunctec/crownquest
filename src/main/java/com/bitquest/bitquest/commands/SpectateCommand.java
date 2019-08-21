@@ -1,6 +1,6 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -9,10 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class SpectateCommand extends CommandAction {
-  private BitQuest bitQuest;
+  private CrownQuest crownQuest;
 
-  public SpectateCommand(BitQuest plugin) {
-    this.bitQuest = plugin;
+  public SpectateCommand(CrownQuest plugin) {
+    this.crownQuest = plugin;
   }
 
   public boolean run(

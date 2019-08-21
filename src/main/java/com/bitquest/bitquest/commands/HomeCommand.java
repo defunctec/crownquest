@@ -1,6 +1,6 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -8,10 +8,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
 public class HomeCommand extends CommandAction {
-  private BitQuest bitQuest;
+  private CrownQuest crownQuest;
 
-  public HomeCommand(BitQuest plugin) {
-    bitQuest = plugin;
+  public HomeCommand(CrownQuest plugin) {
+    crownQuest = plugin;
   }
 
   public boolean run(
@@ -19,7 +19,7 @@ public class HomeCommand extends CommandAction {
     if (player.getBedSpawnLocation() != null && !player.hasMetadata("teleporting")) {
       // TODO: tp player home
       player.sendMessage(ChatColor.GREEN + "Teleporting...");
-      player.setMetadata("teleporting", new FixedMetadataValue(bitQuest, true));
+      player.setMetadata("teleporting", new FixedMetadataValue(crownQuest, true));
       World world = Bukkit.getWorld("world");
 
       final Location spawn = player.getBedSpawnLocation();
@@ -28,17 +28,17 @@ public class HomeCommand extends CommandAction {
       if (!c.isLoaded()) {
         c.load();
       }
-      bitQuest
+      crownQuest
           .getServer()
           .getScheduler()
           .scheduleSyncDelayedTask(
-              bitQuest,
+              crownQuest,
               new Runnable() {
 
                 public void run() {
                   if (player.hasMetadata("teleporting")) {
                     player.teleport(spawn);
-                    player.removeMetadata("teleporting", bitQuest);
+                    player.removeMetadata("teleporting", crownQuest);
                   }
                 }
               },

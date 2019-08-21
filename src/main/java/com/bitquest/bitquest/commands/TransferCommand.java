@@ -1,18 +1,18 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
-import com.bitquest.bitquest.User;
-import com.bitquest.bitquest.Wallet;
+import com.crownquest.crownquest.CrownQuest;
+import com.crownquest.crownquest.User;
+import com.crownquest.crownquest.Wallet;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class TransferCommand extends CommandAction {
-  private BitQuest bitQuest;
+  private CrownQuest crownQuest;
 
-  public TransferCommand(BitQuest plugin) {
-    bitQuest = plugin;
+  public TransferCommand(CrownQuest plugin) {
+    crownQuest = plugin;
   }
 
   public boolean run(
@@ -25,21 +25,21 @@ public class TransferCommand extends CommandAction {
       for (char c : args[0].toCharArray()) {
         if (!Character.isDigit(c)) return false;
       }
-      final Long sendAmount = Long.parseLong(args[0]) * BitQuest.DENOMINATION_FACTOR;
+      final Long sendAmount = Long.parseLong(args[0]) * CrownQuest.DENOMINATION_FACTOR;
 
       System.out.println(sendAmount);
       Wallet fromWallet = null;
       try {
-        fromWallet = new User(bitQuest.db_con, player.getUniqueId()).wallet;
+        fromWallet = new User(crownQuest.db_con, player.getUniqueId()).wallet;
 
-        if (sendAmount < (BitQuest.MINIMUM_TRANSACTION * BitQuest.DENOMINATION_FACTOR)) {
+        if (sendAmount < (CrownQuest.MINIMUM_TRANSACTION * CrownQuest.DENOMINATION_FACTOR)) {
           player.sendMessage(
               ChatColor.DARK_RED
                   + "Minimum transaction is "
                   + ChatColor.LIGHT_PURPLE
-                  + BitQuest.MINIMUM_TRANSACTION
+                  + CrownQuest.MINIMUM_TRANSACTION
                   + " "
-                  + BitQuest.DENOMINATION_NAME
+                  + CrownQuest.DENOMINATION_NAME
                   + ChatColor.GREEN
                   + ".");
           return true;
@@ -52,7 +52,7 @@ public class TransferCommand extends CommandAction {
                     + ChatColor.LIGHT_PURPLE
                     + args[0]
                     + " "
-                    + BitQuest.DENOMINATION_NAME
+                    + CrownQuest.DENOMINATION_NAME
                     + ChatColor.YELLOW
                     + " to "
                     + ChatColor.BLUE
@@ -67,7 +67,7 @@ public class TransferCommand extends CommandAction {
                       + ChatColor.LIGHT_PURPLE
                       + args[0]
                       + " "
-                      + BitQuest.DENOMINATION_NAME
+                      + CrownQuest.DENOMINATION_NAME
                       + ChatColor.GREEN
                       + " to external address.");
             } else {
@@ -75,7 +75,7 @@ public class TransferCommand extends CommandAction {
                   ChatColor.DARK_RED + "Transaction failed. Please try again later.");
             }
 
-            bitQuest.updateScoreboard(player);
+            crownQuest.updateScoreboard(player);
           }
         }
 
