@@ -1,13 +1,13 @@
 spigot:
-  container_name: bitquest
+  container_name: crownquest
   build: .
   volumes:
-    - "./target/BitQuest.jar:/spigot/plugins/BitQuest.jar"
+    - "./target/CrownQuest.jar:/spigot/plugins/CrownQuest.jar"
   ports:
     - "25565:25565"
   environment:
-    - BLOCKCYPHER_CHAIN=btc/test3
-    - DENOMINATION_NAME=TestBits
+    - BLOCKCYPHER_CHAIN=crw/test3
+    - DENOMINATION_NAME=TestCrws
   links:
     - redis
     - postgres
@@ -16,5 +16,5 @@ redis:
 postgres:
   image: postgres
   environment:
-    - POSTGRES_USER=bitquest
+    - POSTGRES_USER=crownquest
     - POSTGRES_PASSWORD=ORLY

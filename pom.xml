@@ -4,14 +4,14 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <!--Compilation config-->
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.bitquest.bitquest</groupId>
-    <artifactId>BitQuest</artifactId>
+    <groupId>com.crownquest.crownquest</groupId>
+    <artifactId>CrownQuest</artifactId>
     <packaging>jar</packaging>
-    <!--Version of bitQuest-->
+    <!--Version of crownQuest-->
     <version>2.0</version>
     <!--Package information-->
-    <name>BitQuest</name>
-    <url>http://bitquest.co</url>
+    <name>CrownQuest</name>
+    <url>http://crownquest.co</url>
     <!--Other config-->
     <repositories>
         <!--Spigot API-->
@@ -31,14 +31,14 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <finalName>BitQuest</finalName>
+                    <finalName>CrownQuest</finalName>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                     <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
-                            <mainClass>com.bitquest.bitquest</mainClass>
+                            <mainClass>com.crownquest.crownquest</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -64,8 +64,8 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>org.bitcoinj</groupId>
-            <artifactId>bitcoinj-core</artifactId>
+            <groupId>org.crownj</groupId>
+            <artifactId>crownj-core</artifactId>
             <version>0.14.7</version>
             <scope>compile</scope>
         </dependency>

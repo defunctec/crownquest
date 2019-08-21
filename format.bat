@@ -14,7 +14,7 @@ if exist google-java-format-1.5-all-deps.jar (
     echo If you got an error please download and place it here http://github.com/google/google-java-format/releases/download/google-java-format-1.5/google-java-format-1.5-all-deps.jar manualy
 )
 
-java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/bitquest/bitquest/*
-java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/bitquest/bitquest/commands/*
-java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/bitquest/bitquest/events/*
+java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/crownquest/crownquest/*
+java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/crownquest/crownquest/commands/*
+java -jar google-java-format-1.5-all-deps.jar -r src/main/java/com/crownquest/crownquest/events/*
 exit /b 0
