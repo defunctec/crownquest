@@ -1,4 +1,4 @@
-package com.bitquest.bitquest;
+package com.crownquest.crownquest;
 
 import java.sql.*;
 

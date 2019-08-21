@@ -1,4 +1,4 @@
-package com.bitquest.bitquest;
+package com.crownquest.crownquest;
 
 import org.bukkit.inventory.ItemStack;
 
