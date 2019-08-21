@@ -4,11 +4,11 @@ title:  "New beta update: PETS"
 date:   2018-06-12 18:00:00 -0300
 author: "cartulina"
 ---
-Hello Bitquest community! 
+Hello Crownquest community! 
 
 We are happy to announce a new beta update: PETS! 
 
-For 100 bits you can adopt a fluffy furry bestial friend: an ocelot.  It might follow you around chunks and spawns with you every time you die lol.
+For 100 crws you can adopt a fluffy furry bestial friend: an ocelot.  It might follow you around chunks and spawns with you every time you die lol.
 
 If you want to own a kitty, use the command 
 
@@ -16,7 +16,7 @@ If you want to own a kitty, use the command
 /pet &lt;nameofyourpet&gt;
 </code>
 
- It works in both servers: **play.bitquest.co** and **doge.bitquest.co** 
+ It works in both servers: **play.crownquest.co** and **doge.crownquest.co** 
 
 Anyway, this is a beta feature and is not finished yet, so expect your new friend to be a little glitchy.
 

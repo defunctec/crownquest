@@ -6,18 +6,18 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: The server that runs on Bitcoin!
-email: bitquest@bitquest.co
+title: The server that runs on Crown!
+email: crownquest@crownquest.co
 description: >
-  Bitquest is a Survival style Minecraft server with a Bitcoin-denominated economy: Players can buy, sell and trade items using BTC micropayments with a fully funcional Bitcoin wallet you can send money to/from.
+  Crownquest is a Survival style Minecraft server with a Crown-denominated economy: Players can buy, sell and trade items using CRW micropayments with a fully funcional Crown wallet you can send money to/from.
   To start playing, Connect to the following address using the PC Version of Minecraft:
-  play.bitquest.co
+  play.crownquest.co
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://bitquest.co" # the base hostname & protocol for your site
-twitter_username: bitquestmc
-github_username:  bitquest
-facebook_username:  BitQuestMC
-reddit_username:  bitquest
+url: "http://crownquest.co" # the base hostname & protocol for your site
+twitter_username: crownquestmc
+github_username:  crownquest
+facebook_username:  CrownQuestMC
+reddit_username:  crownquest
 excerpt_separator: <!--more-->
 
 # Build settings
