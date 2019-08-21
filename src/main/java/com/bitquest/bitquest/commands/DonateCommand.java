@@ -1,17 +1,17 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
-import com.bitquest.bitquest.User;
+import com.crownquest.crownquest.CrownQuest;
+import com.crownquest.crownquest.User;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class DonateCommand extends CommandAction {
-  private BitQuest bitQuest;
+  private CrownQuest crownQuest;
 
-  public DonateCommand(BitQuest plugin) {
-    bitQuest = plugin;
+  public DonateCommand(CrownQuest plugin) {
+    crownQuest = plugin;
   }
 
   public boolean run(
@@ -19,14 +19,14 @@ public class DonateCommand extends CommandAction {
     if (args.length == 1) {
       if (System.getenv("DONATION_ADDRESS") != null) {
         try {
-          final Long bits = Long.parseLong(args[0]);
-          final Long sat = bits * bitQuest.DENOMINATION_FACTOR;
-          final User user = new User(bitQuest.db_con, player.getUniqueId());
+          final Long crws = Long.parseLong(args[0]);
+          final Long sat = crws * crownQuest.DENOMINATION_FACTOR;
+          final User user = new User(crownQuest.db_con, player.getUniqueId());
           final Long balance = user.wallet.getBalance(0);
 
             if (user.wallet.payment(System.getenv("DONATION_ADDRESS"), sat)) {
               player.sendMessage(ChatColor.GREEN + "Thanks for your support!");
-              bitQuest.updateScoreboard(player);
+              crownQuest.updateScoreboard(player);
             } else {
               player.sendMessage(ChatColor.RED + "Donation failed");
             }

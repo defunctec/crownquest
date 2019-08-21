@@ -1,6 +1,6 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,9 +13,9 @@ public class BanCommand extends CommandAction {
     if (args.length == 1) {
       String playerName = args[0];
 
-      if (BitQuest.REDIS.exists("uuid:" + playerName)) {
-        String uuid = BitQuest.REDIS.get("uuid:" + playerName);
-        BitQuest.REDIS.sadd("banlist", uuid);
+      if (CrownQuest.REDIS.exists("uuid:" + playerName)) {
+        String uuid = CrownQuest.REDIS.get("uuid:" + playerName);
+        CrownQuest.REDIS.sadd("banlist", uuid);
         Player kickedout = Bukkit.getPlayer(playerName);
 
         if (kickedout != null) {

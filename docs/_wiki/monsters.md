@@ -3,7 +3,7 @@ title: "Monsters"
 category: basics
 
 ---
-BitQuest spawns monsters for players to kill in order to level up and get bits. 
+CrownQuest spawns monsters for players to kill in order to level up and get crws. 
 
 Entities that are considered monsters include [Blazes](http://minecraft.gamepedia.com/Blaze), [Cave Spiders](http://minecraft.gamepedia.com/Cave_Spider), [Creepers](http://minecraft.gamepedia.com/Creeper), [Elder Guardians](http://minecraft.gamepedia.com/Elder_Guardian), [Endermen](http://minecraft.gamepedia.com/Enderman), [Endermites](http://minecraft.gamepedia.com/Endermite), [Evokers](http://minecraft.gamepedia.com/Evoker), [Giants](http://minecraft.gamepedia.com/Giant), [Guardians](http://minecraft.gamepedia.com/Guardian), [Husks](http://minecraft.gamepedia.com/Zombie#Husks), [Pig Zombies](http://minecraft.gamepedia.com/Zombie_Pigman), [Silverfish](http://minecraft.gamepedia.com/Silverfish), [Skeletons](http://minecraft.gamepedia.com/Skeleton), [Spiders](http://minecraft.gamepedia.com/Spider), [Strays](http://minecraft.gamepedia.com/Skeleton#Stray), [Vexes](http://minecraft.gamepedia.com/Vex), [Vindicators](http://minecraft.gamepedia.com/Vindicator), [Witches](http://minecraft.gamepedia.com/Witch), [Withers](http://minecraft.gamepedia.com/Wither), [Wither Skeletons](http://minecraft.gamepedia.com/Wither_Skeleton), [Zombies](http://minecraft.gamepedia.com/Zombie), and [Zombie Villagers](http://minecraft.gamepedia.com/Zombie#Zombie_villagers).
 
@@ -24,8 +24,8 @@ Similarly, in the nether, monsters can be from level 17 to level 64(inclusive). 
 Keep in mind that when a monster's level is higher, it's harder to kill.
 
 ## Killing Monsters for Loot
-Monsters can be killed in any way that monsters can be killed in vanilla Minecraft. However, BitQuest only gives out loot or changes a player's level when a monster is killed with a melee attack.
+Monsters can be killed in any way that monsters can be killed in vanilla Minecraft. However, CrownQuest only gives out loot or changes a player's level when a monster is killed with a melee attack.
 
-Each time a player kills a monster with a melee attack, there is a chance of getting loot. The amount of bits you get from a loot drop is a random amount from 1 to the killed monster's level (inclusive). Keep in mind that reward bits are only given if there are enough funds in the loot wallet.
+Each time a player kills a monster with a melee attack, there is a chance of getting loot. The amount of crws you get from a loot drop is a random amount from 1 to the killed monster's level (inclusive). Keep in mind that reward crws are only given if there are enough funds in the loot wallet.
 
 The loot wallet gets its funds from donations and claim land, so if it is empty, there is no-chance of receiving a reward. 

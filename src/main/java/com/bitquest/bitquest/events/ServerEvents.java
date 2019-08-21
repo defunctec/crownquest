@@ -1,16 +1,16 @@
-package com.bitquest.bitquest.events;
+package com.crownquest.crownquest.events;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
 
 public class ServerEvents implements Listener {
-  BitQuest bitQuest;
+  CrownQuest crownQuest;
 
-  public ServerEvents(BitQuest plugin) {
-    bitQuest = plugin;
+  public ServerEvents(CrownQuest plugin) {
+    crownQuest = plugin;
   }
 
   @EventHandler
@@ -19,12 +19,12 @@ public class ServerEvents implements Listener {
     event.setMotd(
         ChatColor.GOLD
             + ChatColor.BOLD.toString()
-            + BitQuest.SERVERDISPLAY_NAME
+            + CrownQuest.SERVERDISPLAY_NAME
             + ChatColor.GRAY
             + ChatColor.BOLD.toString()
             + "Quest"
             + ChatColor.RESET
             + " - The server that runs on "
-            + BitQuest.DENOMINATION_NAME);
+            + CrownQuest.DENOMINATION_NAME);
   }
 }

@@ -1,6 +1,6 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import java.util.Set;
 import java.util.UUID;
 import org.bukkit.ChatColor;
@@ -15,12 +15,12 @@ public class ModCommand extends CommandAction {
       if (args[0].equals("add")) {
         // Sub-command: /mod add
         if (args.length > 1) {
-          if (BitQuest.REDIS.exists("uuid:" + args[1])) {
-            UUID uuid = UUID.fromString(BitQuest.REDIS.get("uuid:" + args[1]));
-            BitQuest.REDIS.sadd("moderators", uuid.toString());
+          if (CrownQuest.REDIS.exists("uuid:" + args[1])) {
+            UUID uuid = UUID.fromString(CrownQuest.REDIS.get("uuid:" + args[1]));
+            CrownQuest.REDIS.sadd("moderators", uuid.toString());
             sender.sendMessage(
                 ChatColor.GREEN
-                    + BitQuest.REDIS.get("name:" + uuid)
+                    + CrownQuest.REDIS.get("name:" + uuid)
                     + " added to moderators group");
 
             return true;
@@ -35,9 +35,9 @@ public class ModCommand extends CommandAction {
       } else if (args[0].equals("remove")) {
         // Sub-command: /mod del
         if (args.length > 1) {
-          if (BitQuest.REDIS.exists("uuid:" + args[1])) {
-            UUID uuid = UUID.fromString(BitQuest.REDIS.get("uuid:" + args[1]));
-            BitQuest.REDIS.srem("moderators", uuid.toString());
+          if (CrownQuest.REDIS.exists("uuid:" + args[1])) {
+            UUID uuid = UUID.fromString(CrownQuest.REDIS.get("uuid:" + args[1]));
+            CrownQuest.REDIS.srem("moderators", uuid.toString());
             return true;
           }
           return false;
@@ -47,9 +47,9 @@ public class ModCommand extends CommandAction {
         }
       } else if (args[0].equals("list")) {
         // Sub-command: /mod list
-        Set<String> moderators = BitQuest.REDIS.smembers("moderators");
+        Set<String> moderators = CrownQuest.REDIS.smembers("moderators");
         for (String uuid : moderators) {
-          sender.sendMessage(ChatColor.YELLOW + BitQuest.REDIS.get("name:" + uuid));
+          sender.sendMessage(ChatColor.YELLOW + CrownQuest.REDIS.get("name:" + uuid));
         }
         return true;
       } else {

@@ -1,16 +1,16 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class MOTDCommand extends CommandAction {
-  private BitQuest bitQuest;
+  private CrownQuest crownQuest;
 
-  public MOTDCommand(BitQuest plugin) {
-    this.bitQuest = plugin;
+  public MOTDCommand(CrownQuest plugin) {
+    this.crownQuest = plugin;
   }
 
   public boolean run(
@@ -22,7 +22,7 @@ public class MOTDCommand extends CommandAction {
       player.sendMessage("Please use only aplhanumeric characters.");
       return false;
     } else {
-      bitQuest.REDIS.set("bitquest:motd", args[0]);
+      crownQuest.REDIS.set("crownquest:motd", args[0]);
       player.sendMessage(ChatColor.GREEN + "Message changed.");
       return true;
     }

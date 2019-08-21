@@ -1,20 +1,20 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CrashtestCommand extends CommandAction {
-  private BitQuest bitQuest;
+  private CrownQuest crownQuest;
 
-  public CrashtestCommand(BitQuest plugin) {
-    this.bitQuest = plugin;
+  public CrashtestCommand(CrownQuest plugin) {
+    this.crownQuest = plugin;
   }
 
   public boolean run(
       CommandSender sender, Command cmd, String label, String[] args, Player player) {
-    bitQuest.crashtest();
+    crownQuest.crashtest();
     return true;
   }
 }

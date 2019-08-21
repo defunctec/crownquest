@@ -1,4 +1,4 @@
-package com.bitquest.bitquest;
+package com.crownquest.crownquest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,13 +13,13 @@ import java.util.Base64;
 import java.util.UUID;
 import javax.net.ssl.HttpsURLConnection;
 import javax.xml.bind.DatatypeConverter;
-import org.bitcoinj.core.DumpedPrivateKey;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.core.ECKey.ECDSASignature;
-import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.core.Sha256Hash;
-import org.bitcoinj.params.MainNetParams;
-import org.bitcoinj.params.TestNet3Params;
+import org.crownj.core.DumpedPrivateKey;
+import org.crownj.core.ECKey;
+import org.crownj.core.ECKey.ECDSASignature;
+import org.crownj.core.NetworkParameters;
+import org.crownj.core.Sha256Hash;
+import org.crownj.params.MainNetParams;
+import org.crownj.params.TestNet3Params;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -61,9 +61,9 @@ public class Wallet {
     final JSONObject blockcypher_params = new JSONObject();
     blockcypher_params.put("inputs", inputs);
     blockcypher_params.put("outputs", outputs);
-    blockcypher_params.put("fees", BitQuest.MINER_FEE);
+    blockcypher_params.put("fees", CrownQuest.MINER_FEE);
 
-    URL url = new URL("https://api.blockcypher.com/v1/" + BitQuest.BLOCKCYPHER_CHAIN + "/txs/new");
+    URL url = new URL("https://api.blockcypher.com/v1/" + CrownQuest.BLOCKCYPHER_CHAIN + "/txs/new");
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
     con.setConnectTimeout(5000);
     con.setDoOutput(true);
@@ -107,13 +107,13 @@ public class Wallet {
           ECKey key = dpk.getKey();
           // checking our key object
           NetworkParameters params = TestNet3Params.get();
-          if (System.getenv("BITQUEST_ENV") != null) {
-            if (System.getenv("BITQUEST_ENV").equalsIgnoreCase("production")) {
+          if (System.getenv("CROWNQUEST_ENV") != null) {
+            if (System.getenv("CROWNQUEST_ENV").equalsIgnoreCase("production")) {
               System.out.println("[transaction] main net transaction start");
               params = MainNetParams.get();
             }
           }
-          String check = ((org.bitcoinj.core.ECKey) key).getPrivateKeyAsWiF(params);
+          String check = ((org.crownj.core.ECKey) key).getPrivateKeyAsWiF(params);
           // System.out.println(wif.equals(check));  // true
           // creating Sha object from string
           Sha256Hash hash = Sha256Hash.wrap(msg);
@@ -136,11 +136,11 @@ public class Wallet {
           url =
                   new URL(
                           "https://api.blockcypher.com/v1/"
-                                  + BitQuest.BLOCKCYPHER_CHAIN
+                                  + CrownQuest.BLOCKCYPHER_CHAIN
                                   + "/txs/send?token="
                                   + System.getenv("BLOCKCYPHER_TOKEN"));
         } else {
-          url = new URL("https://api.blockcypher.com/v1/" + BitQuest.BLOCKCYPHER_CHAIN + "/txs/send");
+          url = new URL("https://api.blockcypher.com/v1/" + CrownQuest.BLOCKCYPHER_CHAIN + "/txs/send");
         }
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -176,7 +176,7 @@ public class Wallet {
     JSONParser parser = new JSONParser();
     final JSONObject jsonObject = new JSONObject();
     jsonObject.put("jsonrpc", "1.0");
-    jsonObject.put("id", "bitquest");
+    jsonObject.put("id", "crownquest");
     jsonObject.put("method", "importaddress");
     JSONArray params = new JSONArray();
     params.add(this.address);
@@ -186,13 +186,13 @@ public class Wallet {
     URL url =
             new URL(
                     "http://"
-                            + System.getenv("BITCOIND_PORT_8332_TCP_ADDR")
+                            + System.getenv("CROWND_PORT_9340_TCP_ADDR")
                             + ":"
-                            + System.getenv("BITCOIND_PORT_8332_TCP_PORT"));
+                            + System.getenv("CROWND_PORT_9340_TCP_PORT"));
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
     con.setConnectTimeout(5000);
     String userPassword =
-            System.getenv("BITCOIND_ENV_USERNAME") + ":" + System.getenv("BITCOIND_ENV_PASSWORD");
+            System.getenv("CROWND_ENV_USERNAME") + ":" + System.getenv("CROWND_ENV_PASSWORD");
     String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
     con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -224,8 +224,8 @@ public class Wallet {
   public Long getBalance(int confirmations) throws IOException, ParseException {
     HttpsURLConnection c = null;
     URL u=new URL("https://blockchain.info/q/addressbalance/" + this.address);
-    if(BitQuest.BLOCKCYPHER_CHAIN.equals("btc/test3")) u = new URL("https://testnet.blockchain.info/q/addressbalance/" + this.address+"?confirmations="+confirmations);
-    if(BitQuest.BLOCKCYPHER_CHAIN.equals("doge/main")) u = new URL("https://dogechain.info/chain/Dogecoin/q/addressbalance/" + this.address);
+    if(CrownQuest.BLOCKCYPHER_CHAIN.equals("crw/test3")) u = new URL("https://testnet.blockchain.info/q/addressbalance/" + this.address+"?confirmations="+confirmations);
+    if(CrownQuest.BLOCKCYPHER_CHAIN.equals("doge/main")) u = new URL("https://dogechain.info/chain/Dogecoin/q/addressbalance/" + this.address);
     c = (HttpsURLConnection) u.openConnection();
     c.setRequestMethod("GET");
     c.setRequestProperty("Content-length", "0");
@@ -248,7 +248,7 @@ public class Wallet {
         }
         br.close();
         System.out.println("[balance] "+this.address+": "+sb.toString().trim());
-        if(BitQuest.BLOCKCYPHER_CHAIN.equals("doge/main")) {
+        if(CrownQuest.BLOCKCYPHER_CHAIN.equals("doge/main")) {
           return Math.round(Double.parseDouble(sb.toString().trim())*100000000L);
         } else {
           return Math.round(Double.parseDouble(sb.toString().trim()));
@@ -268,12 +268,12 @@ public class Wallet {
     if (address.substring(0, 1).equals("N")
         || address.substring(0, 1).equals("n")
         || address.substring(0, 1).equals("m")) {
-      return "live.blockcypher.com/btc-testnet/address/" + address;
+      return "live.blockcypher.com/crw-testnet/address/" + address;
     }
     if (address.substring(0, 1).equals("D")) {
       return "live.blockcypher.com/doge/address/" + address;
     } else {
-      return "live.blockcypher.com/btc/address/" + address;
+      return "live.blockcypher.com/crw/address/" + address;
     }
   }
 

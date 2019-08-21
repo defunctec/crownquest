@@ -1,4 +1,4 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
 import java.util.List;
 import org.bukkit.Bukkit;

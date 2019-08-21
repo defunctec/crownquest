@@ -1,16 +1,16 @@
-package com.bitquest.bitquest.commands;
+package com.crownquest.crownquest.commands;
 
-import com.bitquest.bitquest.BitQuest;
+import com.crownquest.crownquest.CrownQuest;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class PetCommand extends CommandAction {
-  private BitQuest bitQuest;
+  private CrownQuest crownQuest;
 
-  public PetCommand(BitQuest plugin) {
-    this.bitQuest = plugin;
+  public PetCommand(CrownQuest plugin) {
+    this.crownQuest = plugin;
   }
 
   public boolean run(
@@ -19,20 +19,20 @@ public class PetCommand extends CommandAction {
       player.sendMessage("Your pet needs a name!");
       return false;
     } else if ((args[0].equalsIgnoreCase("on"))
-        && (BitQuest.REDIS
+        && (CrownQuest.REDIS
             .get("petIsOn" + player.getUniqueId().toString())
             .equalsIgnoreCase("off"))) {
-      BitQuest.REDIS.set("petIsOn" + player.getUniqueId().toString(), "on");
+      CrownQuest.REDIS.set("petIsOn" + player.getUniqueId().toString(), "on");
       player.sendMessage("Your pet is on!");
-      bitQuest.spawnPet(player);
+      crownQuest.spawnPet(player);
       return true;
     } else if ((args[0].equalsIgnoreCase("off"))
-        && (BitQuest.REDIS
+        && (CrownQuest.REDIS
             .get("petIsOn" + player.getUniqueId().toString())
             .equalsIgnoreCase("on"))) {
-      BitQuest.REDIS.set("petIsOn" + player.getUniqueId().toString(), "off");
+      CrownQuest.REDIS.set("petIsOn" + player.getUniqueId().toString(), "off");
       player.sendMessage("Your pet is off!");
-      bitQuest.spawnPet(player);
+      crownQuest.spawnPet(player);
       return true;
     } else if (args[0].isEmpty()) {
       player.sendMessage("Your pet needs a cool name!");
@@ -44,13 +44,13 @@ public class PetCommand extends CommandAction {
       player.sendMessage("That name is too long!");
       return false;
     } else {
-      if (bitQuest.REDIS.sismember("pet:names", args[0])) {
+      if (crownQuest.REDIS.sismember("pet:names", args[0])) {
         player.sendMessage(ChatColor.RED + "A pet with that name already exists.");
       } else if ((args[0].equalsIgnoreCase("off")) || (args[0].equalsIgnoreCase("on"))) {
         player.sendMessage("You can not choose that as a name!");
       } else {
         try {
-          bitQuest.adoptPet(player, args[0]);
+          crownQuest.adoptPet(player, args[0]);
 
         } catch (Exception e) {
           System.out.println(e);

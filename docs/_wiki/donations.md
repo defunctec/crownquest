@@ -14,8 +14,8 @@ Donations are very important to keep this server up. Please consider donate! Eve
 
 This command will transfer the specified amount from your wallet to our donation account. The donations are used exclusively to mantain the project.
 
-You can also send BTC to:
+You can also send CRW to:
 ```
 3J2sBkLXqHDJvHG22DMBRdNhceevooHaQi
 ```
-<img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=bitcoin:3J2sBkLXqHDJvHG22DMBRdNhceevooHaQi" alt="3A1hmUUqCUV7SdftvVpWc8jQ3xmGqBPGeZ">
+<img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=crown:3J2sBkLXqHDJvHG22DMBRdNhceevooHaQi" alt="3A1hmUUqCUV7SdftvVpWc8jQ3xmGqBPGeZ">

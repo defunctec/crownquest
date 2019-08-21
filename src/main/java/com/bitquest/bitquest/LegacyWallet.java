@@ -1,4 +1,4 @@
-package com.bitquest.bitquest;
+package com.crownquest.crownquest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class LegacyWallet {
 
     final JSONObject jsonObject = new JSONObject();
     jsonObject.put("jsonrpc", "1.0");
-    jsonObject.put("id", "bitquest");
+    jsonObject.put("id", "crownquest");
     jsonObject.put("method", "sendfrom");
     JSONArray params = new JSONArray();
     params.add(account_id);
@@ -37,10 +37,10 @@ public class LegacyWallet {
     System.out.println(params);
     jsonObject.put("params", params);
     System.out.println("Checking blockchain info...");
-    URL url = new URL("http://" + BitQuest.BITCOIN_NODE_HOST + ":" + BitQuest.BITCOIN_NODE_PORT);
+    URL url = new URL("http://" + CrownQuest.CROWN_NODE_HOST + ":" + CrownQuest.CROWN_NODE_PORT);
     System.out.println(url.toString());
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    String userPassword = BitQuest.BITCOIN_NODE_USERNAME + ":" + BitQuest.BITCOIN_NODE_PASSWORD;
+    String userPassword = CrownQuest.CROWN_NODE_USERNAME + ":" + CrownQuest.CROWN_NODE_PASSWORD;
     String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
     con.setRequestProperty("Authorization", "Basic " + encoding);
 
@@ -75,16 +75,16 @@ public class LegacyWallet {
 
     final JSONObject jsonObject = new JSONObject();
     jsonObject.put("jsonrpc", "1.0");
-    jsonObject.put("id", "bitquest");
+    jsonObject.put("id", "crownquest");
     jsonObject.put("method", "getaccountaddress");
     JSONArray params = new JSONArray();
     params.add(account_id);
-    if (BitQuest.BITQUEST_ENV == "development")
+    if (CrownQuest.CROWNQUEST_ENV == "development")
       System.out.println("[getaccountaddress] " + account_id);
     jsonObject.put("params", params);
-    URL url = new URL("http://" + BitQuest.BITCOIN_NODE_HOST + ":" + BitQuest.BITCOIN_NODE_PORT);
+    URL url = new URL("http://" + CrownQuest.CROWN_NODE_HOST + ":" + CrownQuest.CROWN_NODE_PORT);
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    String userPassword = BitQuest.BITCOIN_NODE_USERNAME + ":" + BitQuest.BITCOIN_NODE_PASSWORD;
+    String userPassword = CrownQuest.CROWN_NODE_USERNAME + ":" + CrownQuest.CROWN_NODE_PASSWORD;
     String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
     con.setRequestProperty("Authorization", "Basic " + encoding);
     con.setConnectTimeout(5000);
@@ -108,7 +108,7 @@ public class LegacyWallet {
     }
     in.close();
     JSONObject response_object = (JSONObject) parser.parse(response.toString());
-    if (BitQuest.BITQUEST_ENV == "development") System.out.println(response_object);
+    if (CrownQuest.CROWNQUEST_ENV == "development") System.out.println(response_object);
     return response_object.get("result").toString();
   }
 
@@ -118,16 +118,16 @@ public class LegacyWallet {
       JSONParser parser = new JSONParser();
       final JSONObject jsonObject = new JSONObject();
       jsonObject.put("jsonrpc", "1.0");
-      jsonObject.put("id", "bitquest");
+      jsonObject.put("id", "crownquest");
       jsonObject.put("method", "getbalance");
       JSONArray params = new JSONArray();
       params.add(this.account_id);
       params.add(confirmations);
       jsonObject.put("params", params);
-      URL url = new URL("http://" + BitQuest.BITCOIN_NODE_HOST + ":" + BitQuest.BITCOIN_NODE_PORT);
+      URL url = new URL("http://" + CrownQuest.CROWN_NODE_HOST + ":" + CrownQuest.CROWN_NODE_PORT);
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setConnectTimeout(5000);
-      String userPassword = BitQuest.BITCOIN_NODE_USERNAME + ":" + BitQuest.BITCOIN_NODE_PASSWORD;
+      String userPassword = CrownQuest.CROWN_NODE_USERNAME + ":" + CrownQuest.CROWN_NODE_PASSWORD;
       String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
       con.setRequestProperty("Authorization", "Basic " + encoding);
 

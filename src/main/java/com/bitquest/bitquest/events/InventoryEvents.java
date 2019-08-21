@@ -1,6 +1,6 @@
-package com.bitquest.bitquest.events;
+package com.crownquest.crownquest.events;
 
-import com.bitquest.bitquest.*;
+import com.crownquest.crownquest.*;
 import java.util.ArrayList;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
@@ -18,13 +18,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class InventoryEvents implements Listener {
-  BitQuest bitQuest;
+  CrownQuest crownQuest;
   ArrayList<Trade> trades;
 
-  public InventoryEvents(BitQuest plugin) {
+  public InventoryEvents(CrownQuest plugin) {
     // Villager Prices
-    // By default, prices are in bits (not satoshi)
-    bitQuest = plugin;
+    // By default, prices are in crws (not satoshi)
+    crownQuest = plugin;
     trades = new ArrayList<Trade>();
     trades.add(new Trade(new ItemStack(Material.CLAY_BALL, 64), 100));
     trades.add(new Trade(new ItemStack(Material.COOKED_BEEF, 64), 100));
@@ -82,7 +82,7 @@ public class InventoryEvents implements Listener {
       if (event.getRawSlot() < event.getView().getTopInventory().getSize()) {
         final User user;
         try {
-          user = new User(bitQuest.db_con, player.getUniqueId());
+          user = new User(crownQuest.db_con, player.getUniqueId());
 
         } catch (Exception e) {
           e.printStackTrace();
@@ -117,11 +117,11 @@ public class InventoryEvents implements Listener {
             }
           }
           final boolean hasOpenSlotsFinal = hasOpenSlots;
-          final long satFinal = sat * BitQuest.DENOMINATION_FACTOR;
+          final long satFinal = sat * CrownQuest.DENOMINATION_FACTOR;
             try {
                 if (hasOpenSlotsFinal) {
-                  if (user.wallet.payment(bitQuest.wallet.address, satFinal)) {
-                    if (clicked.getType() == Material.ENCHANTED_BOOK) bitQuest.books.remove(0);
+                  if (user.wallet.payment(crownQuest.wallet.address, satFinal)) {
+                    if (clicked.getType() == Material.ENCHANTED_BOOK) crownQuest.books.remove(0);
 
                     ItemStack item = event.getCurrentItem();
                     ItemMeta meta = item.getItemMeta();
@@ -138,7 +138,7 @@ public class InventoryEvents implements Listener {
                             + satFinal / 100
                             + " (+ miner fees)");
 
-                    bitQuest.updateScoreboard(player);
+                    crownQuest.updateScoreboard(player);
 
                   } else {
                     player.sendMessage(
@@ -175,29 +175,29 @@ public class InventoryEvents implements Listener {
 
       Inventory marketInventory = Bukkit.getServer().createInventory(null, 54, "Market");
       for (int i = 0; i < trades.size(); i++) {
-        int inventory_stock = bitQuest.MAX_STOCK;
+        int inventory_stock = crownQuest.MAX_STOCK;
 
         if (inventory_stock > 0) {
           ItemStack button = new ItemStack(trades.get(i).itemStack);
           ItemMeta meta = button.getItemMeta();
           ArrayList<String> lore = new ArrayList<String>();
-          int bits_price;
-          bits_price = (int) (trades.get(i).price+(BitQuest.MINER_FEE/BitQuest.DENOMINATION_FACTOR));
+          int crws_price;
+          crws_price = (int) (trades.get(i).price+(CrownQuest.MINER_FEE/CrownQuest.DENOMINATION_FACTOR));
 
-          lore.add("Price: " + bits_price);
+          lore.add("Price: " + crws_price);
           meta.setLore(lore);
           button.setItemMeta(meta);
           marketInventory.setItem(i, button);
         }
       }
-      if (bitQuest.books.size() > 0) {
-        ItemStack button = new ItemStack(bitQuest.books.get(0));
+      if (crownQuest.books.size() > 0) {
+        ItemStack button = new ItemStack(crownQuest.books.get(0));
         ItemMeta meta = button.getItemMeta();
         ArrayList<String> lore = new ArrayList<String>();
-        int bits_price;
-        bits_price = 2;
+        int crws_price;
+        crws_price = 2;
 
-        lore.add("Price: " + bits_price);
+        lore.add("Price: " + crws_price);
         meta.setLore(lore);
         button.setItemMeta(meta);
         marketInventory.setItem(trades.size(), button);
@@ -216,18 +216,18 @@ public class InventoryEvents implements Listener {
     event.setCancelled(false);
   }
 
-  // @bitcoinjake09 updates scoreboard if emeralds
+  // @crownjake09 updates scoreboard if emeralds
   @EventHandler
   public void OnPlayerPickup(PlayerPickupItemEvent event) {
     Player player = event.getPlayer();
     ItemStack item = event.getItem().getItemStack();
     Material itemType = item.getType();
     if (((itemType == Material.EMERALD_BLOCK) || (itemType == Material.EMERALD))
-        && (BitQuest.REDIS
+        && (CrownQuest.REDIS
             .get("currency" + player.getUniqueId().toString())
             .equalsIgnoreCase("emerald"))) {
       try {
-        bitQuest.updateScoreboard(player);
+        crownQuest.updateScoreboard(player);
       } catch (Exception e) {
       }
     }
@@ -237,9 +237,9 @@ public class InventoryEvents implements Listener {
   public void OnPlayerDropItem(PlayerDropItemEvent event)
   {
       Player player = event.getPlayer();
-      if(BitQuest.REDIS.get("currency"+player.getUniqueId().toString()).equalsIgnoreCase("emerald"))
+      if(CrownQuest.REDIS.get("currency"+player.getUniqueId().toString()).equalsIgnoreCase("emerald"))
       {
-          try { bitQuest.updateScoreboard(player); } catch (Exception e){}
+          try { crownQuest.updateScoreboard(player); } catch (Exception e){}
       }
   } */
 }

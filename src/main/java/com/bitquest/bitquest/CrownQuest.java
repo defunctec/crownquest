@@ -1,7 +1,7 @@
-package com.bitquest.bitquest;
+package com.crownquest.crownquest;
 
-import com.bitquest.bitquest.commands.*;
-import com.bitquest.bitquest.events.*;
+import com.crownquest.crownquest.commands.*;
+import com.crownquest.crownquest.events.*;
 import com.google.gson.JsonObject;
 import java.io.*;
 import java.net.*;
@@ -28,35 +28,35 @@ import redis.clients.jedis.Jedis;
 // DARK_BLUE UNDERLINE : Link, RED : Server error, DARK_RED : User error, GRAY : Info, DARK_GRAY :
 // Clan, DARK_GREEN : Landname
 
-public class BitQuest extends JavaPlugin {
+public class CrownQuest extends JavaPlugin {
   // TODO: remove env variables not being used anymore
   // Connecting to REDIS
   // Links to the administration account via Environment Variables
-  public static final String BITQUEST_ENV =
-      System.getenv("BITQUEST_ENV") != null ? System.getenv("BITQUEST_ENV") : "development";
+  public static final String CROWNQUEST_ENV =
+      System.getenv("CROWNQUEST_ENV") != null ? System.getenv("CROWNQUEST_ENV") : "development";
   public static final UUID ADMIN_UUID =
       System.getenv("ADMIN_UUID") != null ? UUID.fromString(System.getenv("ADMIN_UUID")) : null;
 
-  public static final String BITCOIN_NODE_HOST =
-      System.getenv("BITCOIN_PORT_8332_TCP_ADDR") != null
-          ? System.getenv("BITCOIN_PORT_8332_TCP_ADDR")
+  public static final String CROWN_NODE_HOST =
+      System.getenv("CROWN_PORT_9340_TCP_ADDR") != null
+          ? System.getenv("CROWN_PORT_9340_TCP_ADDR")
           : null;
-  public static final int BITCOIN_NODE_PORT =
-      System.getenv("BITCOIN_PORT_8332_TCP_PORT") != null
-          ? Integer.parseInt(System.getenv("BITCOIN_PORT_8332_TCP_PORT"))
-          : 8332;
+  public static final int CROWN_NODE_PORT =
+      System.getenv("CROWN_PORT_9340_TCP_PORT") != null
+          ? Integer.parseInt(System.getenv("CROWN_PORT_9340_TCP_PORT"))
+          : 9340;
   public static final String SERVERDISPLAY_NAME =
-      System.getenv("SERVERDISPLAY_NAME") != null ? System.getenv("SERVERDISPLAY_NAME") : "Bit";
+      System.getenv("SERVERDISPLAY_NAME") != null ? System.getenv("SERVERDISPLAY_NAME") : "Crw";
   public static final Long DENOMINATION_FACTOR =
       System.getenv("DENOMINATION_FACTOR") != null
           ? Long.parseLong(System.getenv("DENOMINATION_FACTOR"))
           : 100L;
   public static final String DENOMINATION_NAME =
-      System.getenv("DENOMINATION_NAME") != null ? System.getenv("DENOMINATION_NAME") : "Bits";
+      System.getenv("DENOMINATION_NAME") != null ? System.getenv("DENOMINATION_NAME") : "Crws";
   public static final String BLOCKCYPHER_CHAIN =
-      System.getenv("BLOCKCYPHER_CHAIN") != null ? System.getenv("BLOCKCYPHER_CHAIN") : "btc/test3";
-  public static final String BITCOIN_NODE_USERNAME = System.getenv("BITCOIN_ENV_USERNAME");
-  public static final String BITCOIN_NODE_PASSWORD = System.getenv("BITCOIN_ENV_PASSWORD");
+      System.getenv("BLOCKCYPHER_CHAIN") != null ? System.getenv("BLOCKCYPHER_CHAIN") : "crw/test3";
+  public static final String CROWN_NODE_USERNAME = System.getenv("CROWN_ENV_USERNAME");
+  public static final String CROWN_NODE_PASSWORD = System.getenv("CROWN_ENV_PASSWORD");
   public static final String DISCORD_HOOK_URL = System.getenv("DISCORD_HOOK_URL");
   public static final String BLOCKCYPHER_API_KEY =
       System.getenv("BLOCKCYPHER_API_KEY") != null ? System.getenv("BLOCKCYPHER_API_KEY") : null;
@@ -65,7 +65,7 @@ public class BitQuest extends JavaPlugin {
 
   public static final int MAX_STOCK = 100;
   public static final String SERVER_NAME =
-      System.getenv("SERVER_NAME") != null ? System.getenv("SERVER_NAME") : "BitQuest";
+      System.getenv("SERVER_NAME") != null ? System.getenv("SERVER_NAME") : "CrownQuest";
 
   // Can save world data in elasticsearch (optional)
   public static final String ELASTICSEARCH_ENDPOINT =
@@ -84,10 +84,10 @@ public class BitQuest extends JavaPlugin {
           : 6379;
   public static final Jedis REDIS = new Jedis(REDIS_HOST, REDIS_PORT);
 
-  // Default price: 10,000 satoshis or 100 bits
+  // Default price: 10,000 satoshis or 100 crws
   public static final Long LAND_PRICE =
       System.getenv("LAND_PRICE") != null ? Long.parseLong(System.getenv("LAND_PRICE")) : 10000;
-  // Minimum transaction by default is 2000 bits
+  // Minimum transaction by default is 2000 crws
   public static final Long MINIMUM_TRANSACTION =
       System.getenv("MINIMUM_TRANSACTION") != null
           ? Long.parseLong(System.getenv("MINIMUM_TRANSACTION"))
@@ -128,7 +128,7 @@ public class BitQuest extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    log("[startup] BitQuest starting");
+    log("[startup] CrownQuest starting");
 
     System.out.println("Checking that POSTGRES_PORT_5432_TCP_PORT envoronment variable exists...");
     if (System.getenv("POSTGRES_PORT_5432_TCP_PORT") == null) {
@@ -197,8 +197,8 @@ public class BitQuest extends JavaPlugin {
       }
       System.out.println("[world wallet] address: " + wallet.address);
 
-      if (BITCOIN_NODE_HOST != null) {
-        System.out.println("[startup] checking bitcoin node connection");
+      if (CROWN_NODE_HOST != null) {
+        System.out.println("[startup] checking crown node connection");
         getBlockChainInfo();
       }
 
@@ -348,20 +348,20 @@ public class BitQuest extends JavaPlugin {
     try {
       final JSONObject jsonObject = new JSONObject();
       jsonObject.put("jsonrpc", "1.0");
-      jsonObject.put("id", "bitquest");
+      jsonObject.put("id", "crownquest");
       jsonObject.put("method", "getblockchaininfo");
       JSONArray params = new JSONArray();
       jsonObject.put("params", params);
       System.out.println("Checking blockchain info...");
-      URL url = new URL("http://" + BITCOIN_NODE_HOST + ":" + BITCOIN_NODE_PORT);
+      URL url = new URL("http://" + CROWN_NODE_HOST + ":" + CROWN_NODE_PORT);
       System.out.println(url.toString());
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
-      String userPassword = BITCOIN_NODE_USERNAME + ":" + BITCOIN_NODE_PASSWORD;
+      String userPassword = CROWN_NODE_USERNAME + ":" + CROWN_NODE_PASSWORD;
       String encoding = java.util.Base64.getEncoder().encodeToString(userPassword.getBytes());
       con.setRequestProperty("Authorization", "Basic " + encoding);
 
       con.setRequestMethod("POST");
-      con.setRequestProperty("User-Agent", "bitquest plugin");
+      con.setRequestProperty("User-Agent", "crownquest plugin");
       con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
       con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
       con.setDoOutput(true);
@@ -382,7 +382,7 @@ public class BitQuest extends JavaPlugin {
       System.out.println(response.toString());
       return (JSONObject) parser.parse(response.toString());
     } catch (IOException e) {
-      System.out.println("problem connecting with bitcoin node");
+      System.out.println("problem connecting with crown node");
       System.out.println(e);
       // Unable to call API?
     }
@@ -411,12 +411,12 @@ public class BitQuest extends JavaPlugin {
       walletScoreboardObjective.setDisplayName(
           ChatColor.GOLD
               + ChatColor.BOLD.toString()
-              + BitQuest.SERVERDISPLAY_NAME
+              + CrownQuest.SERVERDISPLAY_NAME
               + ChatColor.GRAY
               + ChatColor.BOLD.toString()
               + "Quest");
 
-      if (BitQuest.BLOCKCYPHER_CHAIN != null) {
+      if (CrownQuest.BLOCKCYPHER_CHAIN != null) {
         Score score =
             walletScoreboardObjective.getScore(
                 ChatColor.GREEN + "Balance:"); // Get a fake offline player
@@ -451,7 +451,7 @@ public class BitQuest extends JavaPlugin {
 
   public void createPet(User user, String pet_name) {
     REDIS.sadd("pet:names", pet_name);
-    BitQuest.REDIS.zincrby("player:tx", PET_PRICE, user.uuid.toString());
+    CrownQuest.REDIS.zincrby("player:tx", PET_PRICE, user.uuid.toString());
     long unixTime = System.currentTimeMillis() / 1000L;
     REDIS.set("pet:" + user.uuid.toString() + ":timestamp", Long.toString(unixTime));
     REDIS.set("pet:" + user.uuid.toString(), pet_name);
@@ -514,10 +514,10 @@ public class BitQuest extends JavaPlugin {
   }
 
   public void teleportToSpawn(Player player) {
-    BitQuest bitQuest = this;
+    CrownQuest crownQuest = this;
     // TODO: open the tps inventory
     player.sendMessage(ChatColor.GREEN + "Teleporting to spawn...");
-    player.setMetadata("teleporting", new FixedMetadataValue(bitQuest, true));
+    player.setMetadata("teleporting", new FixedMetadataValue(crownQuest, true));
     World world = Bukkit.getWorld("world");
 
     final Location spawn = world.getSpawnLocation();
@@ -526,11 +526,11 @@ public class BitQuest extends JavaPlugin {
     if (!c.isLoaded()) {
       c.load();
     }
-    bitQuest
+    crownQuest
         .getServer()
         .getScheduler()
         .scheduleSyncDelayedTask(
-            bitQuest,
+            crownQuest,
             new Runnable() {
 
               public void run() {
@@ -539,7 +539,7 @@ public class BitQuest extends JavaPlugin {
                   spawnPet(player);
                 }
 
-                player.removeMetadata("teleporting", bitQuest);
+                player.removeMetadata("teleporting", crownQuest);
               }
             },
             60L);
@@ -718,9 +718,9 @@ public class BitQuest extends JavaPlugin {
 
   public void setTotalExperience(Player player) {
     int rawxp = 0;
-    if (BitQuest.REDIS.exists("experience.raw." + player.getUniqueId().toString())) {
+    if (CrownQuest.REDIS.exists("experience.raw." + player.getUniqueId().toString())) {
       rawxp =
-          Integer.parseInt(BitQuest.REDIS.get("experience.raw." + player.getUniqueId().toString()));
+          Integer.parseInt(CrownQuest.REDIS.get("experience.raw." + player.getUniqueId().toString()));
     }
     // lower factor, experience is easier to get. you can increase to get the opposite effect
     int level = getLevel(rawxp);
@@ -745,13 +745,13 @@ public class BitQuest extends JavaPlugin {
     String chunk = "";
     if (player.getWorld().getName().equals("world")) {
       chunk = "chunk";
-    } // end world lmao @bitcoinjake09
+    } // end world lmao @crownjake09
     else if (player.getWorld().getName().equals("world_nether")) {
       chunk = "netherchunk";
-    } // end nether @bitcoinjake09
-    BitQuest.REDIS.zincrby("player:tx", LAND_PRICE, player.getUniqueId().toString());
-    BitQuest.REDIS.set(chunk + "" + x + "," + z + "owner", player.getUniqueId().toString());
-    BitQuest.REDIS.set(chunk + "" + x + "," + z + "name", name);
+    } // end nether @crownjake09
+    CrownQuest.REDIS.zincrby("player:tx", LAND_PRICE, player.getUniqueId().toString());
+    CrownQuest.REDIS.set(chunk + "" + x + "," + z + "owner", player.getUniqueId().toString());
+    CrownQuest.REDIS.set(chunk + "" + x + "," + z + "name", name);
     land_owner_cache = new HashMap();
     land_name_cache = new HashMap();
     land_unclaimed_cache = new HashMap();
@@ -777,11 +777,11 @@ public class BitQuest extends JavaPlugin {
     String tempchunk = "";
     if (player.getLocation().getWorld().getName().equals("world")) {
       tempchunk = "chunk";
-    } // end world lmao @bitcoinjake09
+    } // end world lmao @crownjake09
     else if (player.getLocation().getWorld().getName().equals("world_nether")) {
       tempchunk = "netherchunk";
     }
-    // end nether @bitcoinjake09
+    // end nether @crownjake09
     // check that land actually has a name
     final int x = chunk.getX();
     final int z = chunk.getZ();
@@ -805,8 +805,8 @@ public class BitQuest extends JavaPlugin {
                 final User user = new User(this.db_con, player.getUniqueId());
                 player.sendMessage(ChatColor.YELLOW + "Claiming land...");
                 BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-                final BitQuest bitQuest = this;
-                if (BitQuest.BLOCKCYPHER_CHAIN != null) {
+                final CrownQuest crownQuest = this;
+                if (CrownQuest.BLOCKCYPHER_CHAIN != null) {
 
                   if (user.wallet.payment(this.wallet.address, LAND_PRICE)) {
                     saveLandData(player, name, x, z);
@@ -821,7 +821,7 @@ public class BitQuest extends JavaPlugin {
                     landxprice = 4;
                   }
                   int land_price_in_emeralds =
-                      (int) ((LAND_PRICE * landxprice) / BitQuest.DENOMINATION_FACTOR);
+                      (int) ((LAND_PRICE * landxprice) / CrownQuest.DENOMINATION_FACTOR);
                   if (user.countEmeralds(player.getInventory()) > land_price_in_emeralds) {
                     if (user.removeEmeralds(land_price_in_emeralds, player)) {
                       saveLandData(player, name, x, z);
@@ -842,11 +842,11 @@ public class BitQuest extends JavaPlugin {
                 e.printStackTrace();
               }
 
-            } else if (BitQuest.REDIS.get(tempchunk + "" + x + "," + z + "name").equals(name)) {
+            } else if (CrownQuest.REDIS.get(tempchunk + "" + x + "," + z + "name").equals(name)) {
               player.sendMessage(ChatColor.DARK_RED + "You already own this land!");
             } else {
               // Rename land
-              BitQuest.REDIS.set(tempchunk + "" + x + "," + z + "name", name);
+              CrownQuest.REDIS.set(tempchunk + "" + x + "," + z + "name", name);
               player.sendMessage(
                   ChatColor.GREEN
                       + "You renamed this land to "
@@ -868,10 +868,10 @@ public class BitQuest extends JavaPlugin {
     String chunk = "";
     if (player.getWorld().getName().equals("world")) {
       chunk = "chunk";
-    } // end world lmao @bitcoinjake09
+    } // end world lmao @crownjake09
     else if (player.getWorld().getName().equals("world_nether")) {
       chunk = "netherchunk";
-    } // end nether @bitcoinjake09
+    } // end nether @crownjake09
     String key =
         chunk + "" + location.getChunk().getX() + "," + location.getChunk().getZ() + "owner";
     if (REDIS.get(key).equals(player.getUniqueId().toString())) {
@@ -889,10 +889,10 @@ public class BitQuest extends JavaPlugin {
     String chunk = "";
     if (player.getWorld().getName().equals("world")) {
       chunk = "chunk";
-    } // end world lmao @bitcoinjake09
+    } // end world lmao @crownjake09
     else if (player.getWorld().getName().equals("world_nether")) {
       chunk = "netherchunk";
-    } // end nether @bitcoinjake09
+    } // end nether @crownjake09
     if (!(location.getWorld().getName().equals("world"))
         && !(location.getWorld().getName().equals("world_nether"))) {
       // If theyre not in the overworld, they cant build
@@ -903,9 +903,9 @@ public class BitQuest extends JavaPlugin {
       } else if (landPermissionCode(location).equals("p")) {
         return true;
       } else if (landPermissionCode(location).equals("pv")) {
-        return true; // public pvp @BitcoinJake09
+        return true; // public pvp @CrownJake09
       } else if (landPermissionCode(location).equals("v")) {
-        return true; // pvp @BitcoinJake09
+        return true; // pvp @CrownJake09
       } else if (landPermissionCode(location).equals("c")) {
         String owner_uuid =
             REDIS.get("chunk"
@@ -932,16 +932,16 @@ public class BitQuest extends JavaPlugin {
     // permission codes:
     // p = public
     // c = clan
-    // v = PvP(private cant build) by @bitcoinjake09
-    // pv= public PvP(can build) by @bitcoinjake09
+    // v = PvP(private cant build) by @crownjake09
+    // pv= public PvP(can build) by @crownjake09
     // n = no permissions (private)
     String chunk = "";
     if (location.getWorld().getName().equals("world")) {
       chunk = "chunk";
-    } // end world lmao @bitcoinjake09
+    } // end world lmao @crownjake09
     else if (location.getWorld().getName().equals("world_nether")) {
       chunk = "netherchunk";
-    } // end nether @bitcoinjake09
+    } // end nether @crownjake09
     String key =
         chunk + "" + location.getChunk().getX() + "," + location.getChunk().getZ() + "permissions";
     if (land_permission_cache.containsKey(key)) {
@@ -982,7 +982,7 @@ public class BitQuest extends JavaPlugin {
   }
 
   public void sendWalletInfo(final Player player, final User user) {
-    if (BITCOIN_NODE_HOST != null) {
+    if (CROWN_NODE_HOST != null) {
       // TODO: Rewrite send wallet info
     }
     try {
@@ -1004,10 +1004,10 @@ public class BitQuest extends JavaPlugin {
     String chunk = "";
     if (location.getWorld().getName().equals("world")) {
       chunk = "chunk";
-    } // end world lmao @bitcoinjake09
+    } // end world lmao @crownjake09
     else if (location.getWorld().getName().equals("world_nether")) {
       chunk = "netherchunk";
-    } // end nether @bitcoinjake09
+    } // end nether @crownjake09
     String key =
         chunk + "" + location.getChunk().getX() + "," + location.getChunk().getZ() + "owner";
 
@@ -1083,7 +1083,7 @@ public class BitQuest extends JavaPlugin {
 
           con.setRequestMethod("POST");
           con.setRequestProperty("Content-Type", "application/json");
-          con.setRequestProperty("Cookie", "bitquest=true");
+          con.setRequestProperty("Cookie", "crownquest=true");
           con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
 
           con.setDoOutput(true);

@@ -1,4 +1,4 @@
-package com.bitquest.bitquest;
+package com.crownquest.crownquest;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -28,7 +28,7 @@ public class User {
       this.wallet = new Wallet(rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
     } else {
       System.out.println("[user not found] " + this.uuid);
-      this.wallet = BitQuest.generateNewWallet();
+      this.wallet = CrownQuest.generateNewWallet();
       this.wallet.save(this.uuid, db_con);
     }
   }
@@ -38,15 +38,15 @@ public class User {
   private int expFactor = 256;
 
   //    public void addExperience(int exp) {
-  //        BitQuest.REDIS.incrBy("experience.raw."+this.player.getUniqueId().toString(),exp);
+  //        CrownQuest.REDIS.incrBy("experience.raw."+this.player.getUniqueId().toString(),exp);
   //        setTotalExperience(experience());
   //        System.out.println(exp);
   //    }
   public int experience() {
-    if (BitQuest.REDIS.get("experience.raw." + this.uuid.toString()) == null) {
+    if (CrownQuest.REDIS.get("experience.raw." + this.uuid.toString()) == null) {
       return 0;
     } else {
-      return Integer.parseInt(BitQuest.REDIS.get("experience.raw." + this.uuid.toString()));
+      return Integer.parseInt(CrownQuest.REDIS.get("experience.raw." + this.uuid.toString()));
     }
   }
 
@@ -108,7 +108,7 @@ public class User {
   public boolean addEmeralds(int amount, Player player) {
     int EmCount = countEmeralds(player.getInventory());
     int moreEmCount = countEmeralds(player.getInventory()) + amount;
-    double bits = (double) amount;
+    double crws = (double) amount;
     double TempAmount = (double) amount;
     int EmsBack = 0;
     while (TempAmount >= 0) {

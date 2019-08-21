@@ -1,8 +1,8 @@
-package com.bitquest.bitquest.events;
+package com.crownquest.crownquest.events;
 
-import com.bitquest.bitquest.BitQuest;
-import com.bitquest.bitquest.LegacyWallet;
-import com.bitquest.bitquest.User;
+import com.crownquest.crownquest.CrownQuest;
+import com.crownquest.crownquest.LegacyWallet;
+import com.crownquest.crownquest.User;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -37,7 +37,7 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
 public class EntityEvents implements Listener {
-  BitQuest bitQuest;
+  CrownQuest crownQuest;
   StringBuilder rawwelcome = new StringBuilder();
   String PROBLEM_MESSAGE = "Can't join right now. Come back later";
 
@@ -86,12 +86,12 @@ public class EntityEvents implements Listener {
           EntityType.PAINTING,
           EntityType.ENDER_CRYSTAL);
 
-  private int pvar = 0; // pvp area variable @bitcoinjake09
+  private int pvar = 0; // pvp area variable @crownjake09
 
-  public EntityEvents(BitQuest plugin) {
-    bitQuest = plugin;
+  public EntityEvents(CrownQuest plugin) {
+    crownQuest = plugin;
 
-    for (String line : bitQuest.getConfig().getStringList("welcomeMessage")) {
+    for (String line : crownQuest.getConfig().getStringList("welcomeMessage")) {
       for (ChatColor color : ChatColor.values()) {
         line = line.replaceAll("<" + color.name() + ">", color.toString());
       }
@@ -111,25 +111,25 @@ public class EntityEvents implements Listener {
   public void onPlayerLogin(PlayerLoginEvent event) {
     try {
       Player player = event.getPlayer();
-      final User user = new User(bitQuest.db_con, player.getUniqueId());
-      BitQuest.REDIS.set("name:" + player.getUniqueId().toString(), player.getName());
-      BitQuest.REDIS.set("uuid:" + player.getName().toString(), player.getUniqueId().toString());
-      if (BitQuest.REDIS.sismember("banlist", event.getPlayer().getUniqueId().toString())) {
+      final User user = new User(crownQuest.db_con, player.getUniqueId());
+      CrownQuest.REDIS.set("name:" + player.getUniqueId().toString(), player.getName());
+      CrownQuest.REDIS.set("uuid:" + player.getName().toString(), player.getUniqueId().toString());
+      if (CrownQuest.REDIS.sismember("banlist", event.getPlayer().getUniqueId().toString())) {
         System.out.println("kicking banned player " + event.getPlayer().getDisplayName());
         event.disallow(
             PlayerLoginEvent.Result.KICK_OTHER,
-            "You are temporarily banned. Please contact bitquest@bitquest.co");
+            "You are temporarily banned. Please contact crownquest@crownquest.co");
       }
-      if (BitQuest.REDIS.exists("rate_limit:" + event.getPlayer().getUniqueId()) == true) {
-        Long ttl = BitQuest.REDIS.ttl("rate_limit:" + event.getPlayer().getUniqueId());
+      if (CrownQuest.REDIS.exists("rate_limit:" + event.getPlayer().getUniqueId()) == true) {
+        Long ttl = CrownQuest.REDIS.ttl("rate_limit:" + event.getPlayer().getUniqueId());
         event.disallow(
             PlayerLoginEvent.Result.KICK_OTHER, "Please try again in " + ttl + " seconds.");
       }
 
     } catch (Exception e) {
       e.printStackTrace();
-      BitQuest.REDIS.set("rate_limit:" + event.getPlayer().getUniqueId(), "1");
-      BitQuest.REDIS.expire("rate_limit:" + event.getPlayer().getUniqueId(), 60);
+      CrownQuest.REDIS.set("rate_limit:" + event.getPlayer().getUniqueId(), "1");
+      CrownQuest.REDIS.expire("rate_limit:" + event.getPlayer().getUniqueId(), 60);
       event.disallow(
           PlayerLoginEvent.Result.KICK_OTHER,
           "The server is in limited capacity at this moment. Please try again later.");
@@ -143,37 +143,37 @@ public class EntityEvents implements Listener {
     // On dev environment, admin gets op. In production, nobody gets op.
 
     player.setGameMode(GameMode.SURVIVAL);
-    bitQuest.setTotalExperience(player);
+    crownQuest.setTotalExperience(player);
     final String ip = player.getAddress().toString().split("/")[1].split(":")[0];
     System.out.println("User " + player.getName() + "logged in with IP " + ip);
-    BitQuest.REDIS.set("ip" + player.getUniqueId().toString(), ip);
-    BitQuest.REDIS.set("displayname:" + player.getUniqueId().toString(), player.getDisplayName());
-    BitQuest.REDIS.set("uuid:" + player.getName().toString(), player.getUniqueId().toString());
-    BitQuest.REDIS.set("rate_limit:" + event.getPlayer().getUniqueId(), "1");
-    BitQuest.REDIS.expire("rate_limit:" + event.getPlayer().getUniqueId(), 60);
-    if (bitQuest.BITQUEST_ENV.equals("development") == true && bitQuest.ADMIN_UUID == null) {
+    CrownQuest.REDIS.set("ip" + player.getUniqueId().toString(), ip);
+    CrownQuest.REDIS.set("displayname:" + player.getUniqueId().toString(), player.getDisplayName());
+    CrownQuest.REDIS.set("uuid:" + player.getName().toString(), player.getUniqueId().toString());
+    CrownQuest.REDIS.set("rate_limit:" + event.getPlayer().getUniqueId(), "1");
+    CrownQuest.REDIS.expire("rate_limit:" + event.getPlayer().getUniqueId(), 60);
+    if (crownQuest.CROWNQUEST_ENV.equals("development") == true && crownQuest.ADMIN_UUID == null) {
       player.setOp(true);
     }
-    if (bitQuest.isModerator(player)) {
+    if (crownQuest.isModerator(player)) {
 
       player.sendMessage(ChatColor.GREEN + "You are a moderator on this server.");
 
-      String url = "https://live.blockcypher.com/btc-testnet/address/" + bitQuest.wallet.address;
-      if (bitQuest.BLOCKCYPHER_CHAIN == "btc/main")
-        url = "https://live.blockcypher.com/btc/address/" + bitQuest.wallet.address;
-      if (bitQuest.BLOCKCYPHER_CHAIN == "doge/main")
-        url = "https://live.blockcypher.com/doge/address/" + bitQuest.wallet.address;
+      String url = "https://live.blockcypher.com/crw-testnet/address/" + crownQuest.wallet.address;
+      if (crownQuest.BLOCKCYPHER_CHAIN == "crw/main")
+        url = "https://live.blockcypher.com/crw/address/" + crownQuest.wallet.address;
+      if (crownQuest.BLOCKCYPHER_CHAIN == "doge/main")
+        url = "https://live.blockcypher.com/doge/address/" + crownQuest.wallet.address;
       player.sendMessage(ChatColor.DARK_BLUE + "" + ChatColor.UNDERLINE + url);
     }
 
     String welcome = rawwelcome.toString();
     welcome = welcome.replace("<name>", player.getName());
     player.sendMessage(welcome);
-    if (BitQuest.REDIS.exists("clan:" + player.getUniqueId().toString())) {
-      String clan = BitQuest.REDIS.get("clan:" + player.getUniqueId().toString());
+    if (CrownQuest.REDIS.exists("clan:" + player.getUniqueId().toString())) {
+      String clan = CrownQuest.REDIS.get("clan:" + player.getUniqueId().toString());
       player.setPlayerListName(
           ChatColor.GOLD + "[" + clan + "] " + ChatColor.WHITE + player.getName());
-      if (bitQuest.isModerator(player)) {
+      if (crownQuest.isModerator(player)) {
         player.setPlayerListName(
             ChatColor.RED
                 + "[MOD]"
@@ -184,32 +184,32 @@ public class EntityEvents implements Listener {
                 + ChatColor.WHITE
                 + player.getName());
       }
-    } else if ((!BitQuest.REDIS.exists("clan:" + player.getUniqueId().toString()))
-        && (bitQuest.isModerator(player))) {
+    } else if ((!CrownQuest.REDIS.exists("clan:" + player.getUniqueId().toString()))
+        && (crownQuest.isModerator(player))) {
       player.setPlayerListName(ChatColor.RED + "[MOD]" + ChatColor.WHITE + player.getName());
     }
 
     // Prints the user balance
-    bitQuest.setTotalExperience(player);
+    crownQuest.setTotalExperience(player);
 
-    player.sendMessage(ChatColor.YELLOW + "     Welcome to " + bitQuest.SERVER_NAME + "! ");
-    if (BitQuest.REDIS.exists("bitquest:motd") == true) player.sendMessage(BitQuest.REDIS.get("bitquest:motd"));
+    player.sendMessage(ChatColor.YELLOW + "     Welcome to " + crownQuest.SERVER_NAME + "! ");
+    if (CrownQuest.REDIS.exists("crownquest:motd") == true) player.sendMessage(CrownQuest.REDIS.get("crownquest:motd"));
     try {
       player.sendMessage(
               "The loot pool is: "
                       + (int)
-                      (bitQuest.wallet.getBalance(1)/bitQuest.DENOMINATION_FACTOR)
+                      (crownQuest.wallet.getBalance(1)/crownQuest.DENOMINATION_FACTOR)
                       + " "
-                      + bitQuest.DENOMINATION_NAME);
+                      + crownQuest.DENOMINATION_NAME);
     } catch(Exception e) {
       e.printStackTrace();
     }
 
 
-    BitQuest.REDIS.zincrby("player:login", 1, player.getUniqueId().toString());
+    CrownQuest.REDIS.zincrby("player:login", 1, player.getUniqueId().toString());
     // spawn pet
-    if (BitQuest.REDIS.exists("pet:" + player.getUniqueId().toString())) {
-      bitQuest.spawnPet(player);
+    if (CrownQuest.REDIS.exists("pet:" + player.getUniqueId().toString())) {
+      crownQuest.spawnPet(player);
     }
     // check if user has a legacy wallet
     LegacyWallet legacyWallet = new LegacyWallet(player.getUniqueId().toString());
@@ -220,7 +220,7 @@ public class EntityEvents implements Listener {
               + legacyWallet.getBalance(5)
               + " SAT in your old wallet. Use the /upgradewallet command to send them to your new one.");
     }
-    bitQuest.updateScoreboard(player);
+    crownQuest.updateScoreboard(player);
   }
 
   @EventHandler
@@ -234,7 +234,7 @@ public class EntityEvents implements Listener {
       throws ParseException, org.json.simple.parser.ParseException, IOException {
     // Simply setting the cost to zero does not work. there are probably
     // checks downstream for this. Instead cancel out the cost.
-    // None of this actually changes the bitquest xp anyway, so just make
+    // None of this actually changes the crownquest xp anyway, so just make
     // things look correct for the user. This only works for the enchantment table,
     // not the anvil.
     event.getEnchanter().setLevel(event.getEnchanter().getLevel() + event.whichButton() + 1);
@@ -244,7 +244,7 @@ public class EntityEvents implements Listener {
   public void onPlayerMove(PlayerMoveEvent event)
       throws ParseException, org.json.simple.parser.ParseException, IOException {
     // TODO: Check if zone is PvP only when chunks change
-    // if ((bitQuest.isPvP(event.getPlayer().getLocation()) == true) && (pvar == 0)) {
+    // if ((crownQuest.isPvP(event.getPlayer().getLocation()) == true) && (pvar == 0)) {
     //     event.getPlayer().sendMessage(ChatColor.RED + "IN PVP ZONE");
     //     pvar++;
     // }
@@ -274,16 +274,16 @@ public class EntityEvents implements Listener {
         String name2 = "the wilderness";
         String key1 = chunkname + "" + x1 + "," + z1 + "name";
         String key2 = chunkname + "" + x2 + "," + z2 + "name";
-        if (bitQuest.landIsClaimed(event.getFrom())) {
-          if (bitQuest.land_name_cache.containsKey(key1)) {
-            name1 = bitQuest.land_name_cache.get(key1);
+        if (crownQuest.landIsClaimed(event.getFrom())) {
+          if (crownQuest.land_name_cache.containsKey(key1)) {
+            name1 = crownQuest.land_name_cache.get(key1);
           } else {
-            name1 = BitQuest.REDIS.get(key1) != null ? BitQuest.REDIS.get(key1) : "the wilderness";
-            bitQuest.land_name_cache.put(key1, name1);
+            name1 = CrownQuest.REDIS.get(key1) != null ? CrownQuest.REDIS.get(key1) : "the wilderness";
+            crownQuest.land_name_cache.put(key1, name1);
           }
         }
-        if (bitQuest.landIsClaimed(event.getTo())) {
-          name2 = BitQuest.REDIS.get(key2) != null ? BitQuest.REDIS.get(key2) : "the wilderness";
+        if (crownQuest.landIsClaimed(event.getTo())) {
+          name2 = CrownQuest.REDIS.get(key2) != null ? CrownQuest.REDIS.get(key2) : "the wilderness";
         }
         event.getPlayer().setGameMode(GameMode.SURVIVAL);
 
@@ -359,28 +359,28 @@ public class EntityEvents implements Listener {
         if(damage.getDamager() instanceof Arrow && ((Arrow)damage.getDamager()).getShooter() instanceof  Player) player=(Player)((Arrow)damage.getDamager()).getShooter();
         if (player!=null) {
 
-          Long money = bitQuest.LAND_PRICE;
+          Long money = crownQuest.LAND_PRICE;
 
           // Add EXP
           int exp = level * 4;
-          bitQuest.REDIS.incrBy("experience.raw." + player.getUniqueId().toString(), exp);
-          bitQuest.setTotalExperience(player);
+          crownQuest.REDIS.incrBy("experience.raw." + player.getUniqueId().toString(), exp);
+          crownQuest.setTotalExperience(player);
           if (damage.getEntity() instanceof Wither) {
 
-              final User user = new User(bitQuest.db_con, player.getUniqueId());
+              final User user = new User(crownQuest.db_con, player.getUniqueId());
 
-              if (bitQuest.wallet.payment(user.wallet.address, money)) {
+              if (crownQuest.wallet.payment(user.wallet.address, money)) {
                 System.out.println("[loot] " + player.getDisplayName() + ": " + money);
-                bitQuest.sendDiscordMessage(player.getDisplayName()+" killed "+damage.getEntity().getName()+" !!! A reward was paid: "+money/bitQuest.DENOMINATION_FACTOR+" "+bitQuest.DENOMINATION_NAME);
-                bitQuest.announce(
+                crownQuest.sendDiscordMessage(player.getDisplayName()+" killed "+damage.getEntity().getName()+" !!! A reward was paid: "+money/crownQuest.DENOMINATION_FACTOR+" "+crownQuest.DENOMINATION_NAME);
+                crownQuest.announce(
                     ChatColor.GREEN
                         + player.getDisplayName()
                         + " got "
                         + ChatColor.BOLD
-                        + money / bitQuest.DENOMINATION_FACTOR
+                        + money / crownQuest.DENOMINATION_FACTOR
                         + ChatColor.GREEN
                         + " "
-                        + bitQuest.DENOMINATION_NAME
+                        + crownQuest.DENOMINATION_NAME
                         + " of loot!");
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 20, 1);
               }
@@ -427,13 +427,13 @@ public class EntityEvents implements Listener {
 
     EntityType entityType = entity.getType();
     // max level is 128
-    int level = Math.min(maxlevel,BitQuest.rand(minlevel, minlevel+(spawn_distance/1000)));
+    int level = Math.min(maxlevel,CrownQuest.rand(minlevel, minlevel+(spawn_distance/1000)));
 
     if (entity instanceof  Giant) {
         entity.setMaxHealth(2858519);
         entity.setCustomName("Giant Terry");
     } else if (entity instanceof Monster) {
-      bitQuest.createBossFight(e.getEntity().getLocation());
+      crownQuest.createBossFight(e.getEntity().getLocation());
 
       // Disable mob spawners. Keep mob farmers away
       if (e.getSpawnReason() == SpawnReason.SPAWNER||spawn_distance<64) {
@@ -445,39 +445,39 @@ public class EntityEvents implements Listener {
 
           if (level < 1) level = 1;
 
-          entity.setMetadata("level", new FixedMetadataValue(bitQuest, level));
+          entity.setMetadata("level", new FixedMetadataValue(crownQuest, level));
           entity.setCustomName(
               String.format(
                   "%s lvl %d",
                   WordUtils.capitalizeFully(entityType.name().replace("_", " ")), level));
           if(entity instanceof Wither) {
             level=level+10;
-            entity.setCustomName("Wither (Reward: "+Math.round((bitQuest.LAND_PRICE)/bitQuest.DENOMINATION_FACTOR)+" "+bitQuest.DENOMINATION_NAME+")");
+            entity.setCustomName("Wither (Reward: "+Math.round((crownQuest.LAND_PRICE)/crownQuest.DENOMINATION_FACTOR)+" "+crownQuest.DENOMINATION_NAME+")");
           }
           entity.setMaxHealth(1 + level);
 
           entity.setHealth(1 + level);
 
           // add potion effects
-          if (bitQuest.rand(1, 100) < level)
+          if (crownQuest.rand(1, 100) < level)
             entity.addPotionEffect(
                 new PotionEffect(PotionEffectType.ABSORPTION, Integer.MAX_VALUE, 2), true);
-          if (bitQuest.rand(1, 100) < level)
+          if (crownQuest.rand(1, 100) < level)
             entity.addPotionEffect(
                 new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 2), true);
-          if (bitQuest.rand(1, 100) < level)
+          if (crownQuest.rand(1, 100) < level)
             entity.addPotionEffect(
                 new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 2), true);
-          if (bitQuest.rand(1, 100) < level)
+          if (crownQuest.rand(1, 100) < level)
             entity.addPotionEffect(
                 new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 2), true);
-          if (bitQuest.rand(1, 100) < level)
+          if (crownQuest.rand(1, 100) < level)
             entity.addPotionEffect(
                 new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 2), true);
-          if (bitQuest.rand(1, 100) < level)
+          if (crownQuest.rand(1, 100) < level)
             entity.addPotionEffect(
                 new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 2), true);
-          if (bitQuest.rand(1, 100) < level)
+          if (crownQuest.rand(1, 100) < level)
             entity.addPotionEffect(
                 new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2), true);
 
@@ -490,7 +490,7 @@ public class EntityEvents implements Listener {
           }
 
           // some creepers are charged
-          if (entity instanceof Creeper && BitQuest.rand(0, 100) < level) {
+          if (entity instanceof Creeper && CrownQuest.rand(0, 100) < level) {
             ((Creeper) entity).setPowered(true);
           }
 
@@ -507,7 +507,7 @@ public class EntityEvents implements Listener {
             ItemStack bow = new ItemStack(Material.BOW);
             randomEnchantItem(bow, level);
           }
-          if (BitQuest.BITQUEST_ENV.equals("development"))
+          if (CrownQuest.CROWNQUEST_ENV.equals("development"))
             System.out.println(
                 "[spawn mob] "
                     + entityType.name()
@@ -515,7 +515,7 @@ public class EntityEvents implements Listener {
                     + level
                     + " spawn distance: "
                     + spawn_distance);
-          if (bitQuest.rand(1, 100) == 20 && bitQuest.spookyMode == true) {
+          if (crownQuest.rand(1, 100) == 20 && crownQuest.spookyMode == true) {
             e.getLocation()
                 .getWorld()
                 .spawnEntity(
@@ -573,7 +573,7 @@ public class EntityEvents implements Listener {
 
         // Player vs. Protected entities
         if (PROTECTED_ENTITIES.contains(event.getEntity().getType())) {
-          if (!bitQuest.canBuild(event.getEntity().getLocation(), player)) {
+          if (!crownQuest.canBuild(event.getEntity().getLocation(), player)) {
             event.setCancelled(true);
           }
         }
@@ -588,12 +588,12 @@ public class EntityEvents implements Listener {
           }
         // Player vs. Animal in claimed location
         if (event.getEntity() instanceof Animals) {
-          if (!bitQuest.canBuild(event.getEntity().getLocation(), player)) {
+          if (!crownQuest.canBuild(event.getEntity().getLocation(), player)) {
             event.setCancelled(true);
           }
         }
         // Player vs. Villager
-        if (!bitQuest.isModerator(player) && event.getEntity() instanceof Villager) {
+        if (!crownQuest.isModerator(player) && event.getEntity() instanceof Villager) {
           event.setCancelled(true);
 
         } else if (event.getEntity() instanceof Player) {
@@ -621,14 +621,14 @@ public class EntityEvents implements Listener {
     // Gives random SWORD
     if (!(entity instanceof Skeleton)) {
       Material sword_material = null;
-      if (BitQuest.rand(0, 2) < level) sword_material = Material.WOOD_AXE;
-      if (BitQuest.rand(0, 4) < level) sword_material = Material.GOLD_AXE;
-      if (BitQuest.rand(0, 8) < level) sword_material = Material.IRON_AXE;
-      if (BitQuest.rand(0, 16) < level) sword_material = Material.DIAMOND_AXE;
-      if (BitQuest.rand(0, 32) < level) sword_material = Material.WOOD_SWORD;
-      if (BitQuest.rand(0, 64) < level) sword_material = Material.GOLD_SWORD;
-      if (BitQuest.rand(0, 128) < level) sword_material = Material.IRON_SWORD;
-      if (BitQuest.rand(0, 256) < level) sword_material = Material.DIAMOND_SWORD;
+      if (CrownQuest.rand(0, 2) < level) sword_material = Material.WOOD_AXE;
+      if (CrownQuest.rand(0, 4) < level) sword_material = Material.GOLD_AXE;
+      if (CrownQuest.rand(0, 8) < level) sword_material = Material.IRON_AXE;
+      if (CrownQuest.rand(0, 16) < level) sword_material = Material.DIAMOND_AXE;
+      if (CrownQuest.rand(0, 32) < level) sword_material = Material.WOOD_SWORD;
+      if (CrownQuest.rand(0, 64) < level) sword_material = Material.GOLD_SWORD;
+      if (CrownQuest.rand(0, 128) < level) sword_material = Material.IRON_SWORD;
+      if (CrownQuest.rand(0, 256) < level) sword_material = Material.DIAMOND_SWORD;
       if (sword_material != null) {
         ItemStack sword = new ItemStack(sword_material);
         randomEnchantItem(sword, level);
@@ -640,11 +640,11 @@ public class EntityEvents implements Listener {
     // Gives random HELMET
     Material helmet_material = null;
 
-    if (BitQuest.rand(0, 32) < level) helmet_material = Material.LEATHER_HELMET;
+    if (CrownQuest.rand(0, 32) < level) helmet_material = Material.LEATHER_HELMET;
 
-    if (BitQuest.rand(0, 64) < level) helmet_material = Material.CHAINMAIL_HELMET;
-    if (BitQuest.rand(0, 128) < level) helmet_material = Material.IRON_HELMET;
-    if (BitQuest.rand(0, 256) < level) helmet_material = Material.DIAMOND_HELMET;
+    if (CrownQuest.rand(0, 64) < level) helmet_material = Material.CHAINMAIL_HELMET;
+    if (CrownQuest.rand(0, 128) < level) helmet_material = Material.IRON_HELMET;
+    if (CrownQuest.rand(0, 256) < level) helmet_material = Material.DIAMOND_HELMET;
     if (helmet_material != null) {
       ItemStack helmet = new ItemStack(helmet_material);
 
@@ -655,10 +655,10 @@ public class EntityEvents implements Listener {
 
     // Gives random CHESTPLATE
     Material chestplate_material = null;
-    if (BitQuest.rand(0, 32) < level) chestplate_material = Material.LEATHER_CHESTPLATE;
-    if (BitQuest.rand(0, 64) < level) chestplate_material = Material.CHAINMAIL_CHESTPLATE;
-    if (BitQuest.rand(0, 128) < level) chestplate_material = Material.IRON_CHESTPLATE;
-    if (BitQuest.rand(0, 256) < level) chestplate_material = Material.DIAMOND_CHESTPLATE;
+    if (CrownQuest.rand(0, 32) < level) chestplate_material = Material.LEATHER_CHESTPLATE;
+    if (CrownQuest.rand(0, 64) < level) chestplate_material = Material.CHAINMAIL_CHESTPLATE;
+    if (CrownQuest.rand(0, 128) < level) chestplate_material = Material.IRON_CHESTPLATE;
+    if (CrownQuest.rand(0, 256) < level) chestplate_material = Material.DIAMOND_CHESTPLATE;
 
     if (chestplate_material != null) {
       ItemStack chest = new ItemStack(chestplate_material);
@@ -669,10 +669,10 @@ public class EntityEvents implements Listener {
 
     // Gives random Leggings
     Material leggings_material = null;
-    if (BitQuest.rand(0, 32) < level) leggings_material = Material.LEATHER_LEGGINGS;
-    if (BitQuest.rand(0, 64) < level) leggings_material = Material.CHAINMAIL_LEGGINGS;
-    if (BitQuest.rand(0, 128) < level) leggings_material = Material.IRON_LEGGINGS;
-    if (BitQuest.rand(0, 256) < level) leggings_material = Material.DIAMOND_LEGGINGS;
+    if (CrownQuest.rand(0, 32) < level) leggings_material = Material.LEATHER_LEGGINGS;
+    if (CrownQuest.rand(0, 64) < level) leggings_material = Material.CHAINMAIL_LEGGINGS;
+    if (CrownQuest.rand(0, 128) < level) leggings_material = Material.IRON_LEGGINGS;
+    if (CrownQuest.rand(0, 256) < level) leggings_material = Material.DIAMOND_LEGGINGS;
     if (leggings_material != null) {
       ItemStack leggings = new ItemStack(leggings_material);
 
@@ -683,11 +683,11 @@ public class EntityEvents implements Listener {
 
     // Gives Random BOOTS
     Material boot_material = null;
-    if (BitQuest.rand(0, 32) < level) boot_material = Material.LEATHER_BOOTS;
+    if (CrownQuest.rand(0, 32) < level) boot_material = Material.LEATHER_BOOTS;
 
-    if (BitQuest.rand(0, 64) < level) boot_material = Material.CHAINMAIL_BOOTS;
-    if (BitQuest.rand(0, 128) < level) boot_material = Material.IRON_BOOTS;
-    if (BitQuest.rand(0, 256) < level) boot_material = Material.DIAMOND_BOOTS;
+    if (CrownQuest.rand(0, 64) < level) boot_material = Material.CHAINMAIL_BOOTS;
+    if (CrownQuest.rand(0, 128) < level) boot_material = Material.IRON_BOOTS;
+    if (CrownQuest.rand(0, 256) < level) boot_material = Material.DIAMOND_BOOTS;
     if (boot_material != null) {
       ItemStack boots = new ItemStack(boot_material);
 
@@ -701,35 +701,35 @@ public class EntityEvents implements Listener {
   public static void randomEnchantItem(ItemStack item, int level) {
     ItemMeta meta = item.getItemMeta();
     Enchantment enchantment = null;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.ARROW_FIRE;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.ARROW_DAMAGE;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.ARROW_INFINITE;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.ARROW_KNOCKBACK;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.DAMAGE_ARTHROPODS;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.DAMAGE_UNDEAD;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.DAMAGE_ALL;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.DIG_SPEED;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.DURABILITY;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.FIRE_ASPECT;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.KNOCKBACK;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.LOOT_BONUS_BLOCKS;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.LOOT_BONUS_MOBS;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.LUCK;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.LURE;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.OXYGEN;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.PROTECTION_ENVIRONMENTAL;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.PROTECTION_EXPLOSIONS;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.PROTECTION_FALL;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.PROTECTION_PROJECTILE;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.PROTECTION_FIRE;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.SILK_TOUCH;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.THORNS;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.WATER_WORKER;
-    if (BitQuest.rand(0, 128) < level) enchantment = Enchantment.DEPTH_STRIDER;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.ARROW_FIRE;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.ARROW_DAMAGE;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.ARROW_INFINITE;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.ARROW_KNOCKBACK;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.DAMAGE_ARTHROPODS;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.DAMAGE_UNDEAD;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.DAMAGE_ALL;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.DIG_SPEED;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.DURABILITY;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.FIRE_ASPECT;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.KNOCKBACK;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.LOOT_BONUS_BLOCKS;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.LOOT_BONUS_MOBS;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.LUCK;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.LURE;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.OXYGEN;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.PROTECTION_ENVIRONMENTAL;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.PROTECTION_EXPLOSIONS;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.PROTECTION_FALL;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.PROTECTION_PROJECTILE;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.PROTECTION_FIRE;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.SILK_TOUCH;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.THORNS;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.WATER_WORKER;
+    if (CrownQuest.rand(0, 128) < level) enchantment = Enchantment.DEPTH_STRIDER;
 
     if (enchantment != null) {
       meta.addEnchant(
-          enchantment, BitQuest.rand(enchantment.getStartLevel(), enchantment.getMaxLevel()), true);
+          enchantment, CrownQuest.rand(enchantment.getStartLevel(), enchantment.getMaxLevel()), true);
       item.setItemMeta(meta);
     }
   }
@@ -739,7 +739,7 @@ public class EntityEvents implements Listener {
     Player player = event.getPlayer();
     ArmorStand stand = event.getRightClicked();
 
-    if (!bitQuest.canBuild(stand.getLocation(), player)) {
+    if (!crownQuest.canBuild(stand.getLocation(), player)) {
       event.setCancelled(true);
     }
   }
@@ -750,7 +750,7 @@ public class EntityEvents implements Listener {
     Entity entity = event.getRightClicked();
 
     if (PROTECTED_ENTITIES.contains(entity.getType())) {
-      if (!bitQuest.canBuild(entity.getLocation(), player)) {
+      if (!crownQuest.canBuild(entity.getLocation(), player)) {
         event.setCancelled(true);
       }
     }
@@ -771,7 +771,7 @@ public class EntityEvents implements Listener {
         }
       }
       // If player doesn't have permission, disallow the player to interact with it.
-      if (!bitQuest.canBuild(b.getLocation(), event.getPlayer())) {
+      if (!crownQuest.canBuild(b.getLocation(), event.getPlayer())) {
         event.setCancelled(true);
         p.sendMessage(ChatColor.DARK_RED + "You don't have permission to do that!");
       }
@@ -781,7 +781,7 @@ public class EntityEvents implements Listener {
   @EventHandler
   void onPlayerBucketFill(PlayerBucketFillEvent event) {
     Player p = event.getPlayer();
-    if (!bitQuest.canBuild(event.getBlockClicked().getLocation(), event.getPlayer())) {
+    if (!crownQuest.canBuild(event.getBlockClicked().getLocation(), event.getPlayer())) {
       p.sendMessage(ChatColor.DARK_RED + "You don't have permission to do that!");
       event.setCancelled(true);
     }
@@ -789,15 +789,15 @@ public class EntityEvents implements Listener {
 
   @EventHandler(priority = EventPriority.NORMAL)
   public void onPlayerRespawn(final PlayerRespawnEvent event) {
-    if (bitQuest.REDIS.exists("pet:" + event.getPlayer().getUniqueId())) {
-      bitQuest.spawnPet(event.getPlayer());
+    if (crownQuest.REDIS.exists("pet:" + event.getPlayer().getUniqueId())) {
+      crownQuest.spawnPet(event.getPlayer());
     }
   }
 
   @EventHandler
   void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
     Player p = event.getPlayer();
-    if (!bitQuest.canBuild(event.getBlockClicked().getLocation(), event.getPlayer())) {
+    if (!crownQuest.canBuild(event.getBlockClicked().getLocation(), event.getPlayer())) {
       p.sendMessage(ChatColor.DARK_RED + "You don't have permission to do that!");
       event.setCancelled(true);
     }
