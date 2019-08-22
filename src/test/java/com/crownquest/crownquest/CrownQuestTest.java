@@ -1,4 +1,4 @@
-package com.bitquest.bitquest;
+package com.crownquest.crownquest;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -20,17 +20,17 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-public class BitQuestTest {
+public class CrownQuestTest {
 
     @Test
     public void testWallet() throws SQLException, IOException, ParseException, java.text.ParseException {
-        if(BitQuest.BITCOIN_NODE_USERNAME!=null&&System.getenv("POSTGRES_1_PORT_5432_TCP_ADDR")!=null&&System.getenv("POSTGRES_ENV_POSTGRES_USER")!=null&&System.getenv("POSTGRES_ENV_POSTGRES_PASSWORD")!=null) {
-            final String db_url = "jdbc:postgresql://" + System.getenv("POSTGRES_1_PORT_5432_TCP_ADDR") + ":" + System.getenv("POSTGRES_1_PORT_5432_TCP_PORT") + "/bitquest";
+        if(CrownQuest.CROWN_NODE_USERNAME!=null&&System.getenv("POSTGRES_1_PORT_5432_TCP_ADDR")!=null&&System.getenv("POSTGRES_ENV_POSTGRES_USER")!=null&&System.getenv("POSTGRES_ENV_POSTGRES_PASSWORD")!=null) {
+            final String db_url = "jdbc:postgresql://" + System.getenv("POSTGRES_1_PORT_5432_TCP_ADDR") + ":" + System.getenv("POSTGRES_1_PORT_5432_TCP_PORT") + "/CrownQuest";
 
-            System.out.println("full node username: "+BitQuest.BITCOIN_NODE_USERNAME);
-            System.out.println("full node host: "+BitQuest.BITCOIN_NODE_HOST);
-            System.out.println("full node port: "+BitQuest.BITCOIN_NODE_PORT);
-            System.out.println("full node password: "+BitQuest.BITCOIN_NODE_PASSWORD);
+            System.out.println("full node username: "+CrownQuest.CROWN_NODE_USERNAME);
+            System.out.println("full node host: "+CrownQuest.CROWN_NODE_HOST);
+            System.out.println("full node port: "+CrownQuest.CROWN_NODE_PORT);
+            System.out.println("full node password: "+CrownQuest.CROWN_NODE_PASSWORD);
             System.out.println("db url: "+db_url);
 
             System.out.println("db username: "+System.getenv("POSTGRES_ENV_POSTGRES_USER"));
