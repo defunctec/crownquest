@@ -88,15 +88,11 @@ Configuration can be done via enviroment variables:
 
 | environment variable            | description                                                            |
 |---------------------------------|------------------------------------------------------------------------|
-| BITQUEST_ENV                    | Set to 'production' to enable main net transactions.                   |
-| BITQUEST_NODE_USERNAME          | username for Bitcoin node                                              |
-| BITQUEST_NODE_PASSWORD          | password for Bitcoin node                                              |
-| BITQUEST_NODE_HOST              | IP to a bitcoin node with JSON-RPC interface enabled                   |
+| CROWNQUEST_ENV                  | Set to 'production' to enable main net transactions.                   |
+| CROWNQUEST_NODE_USERNAME        | username for Bitcoin node                                              |
+| CROWNQUEST_NODE_PASSWORD        | password for Bitcoin node                                              |
+| CROWNQUEST_NODE_HOST            | IP to a bitcoin node with JSON-RPC interface enabled                   |
 | ADMIN_UUID                      | Minecraft user ID for the main administrator                           |
-| POSTGRES_ENV_POSTGRES_USER      | Username for connecting to the PostgreSQL database                     |
-| POSTGRES_1_PORT_5432_TCP_ADDR   | Address of DB server                                                   | 
-| POSTGRES_1_PORT_5432_TCP_PORT   | Port for the DB server                                                 |
-| POSTGRES_1_PORT_5432_TCP_DBNAME | Name of the database to be used                                        |
 
 # Run docker
 Run within the crownquest folder
