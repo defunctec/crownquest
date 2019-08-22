@@ -55,7 +55,10 @@ apt update
 ```sh
 sudo apt install -y openjdk-8-jre openjdk-8-jdk maven
 ```
-
+3. Download and install software
+```sh
+apt install nano
+```
 
 ## 2. Compile CrownQuest and generate a JAR file
 There is a maven project that will download the spigot 1.12.2 (downloading the latest version will be automated in future):
@@ -83,6 +86,11 @@ You can easly format the code by doing (you can exec this script from anywhere (
 You can use Docker to run a CrownQuest server. The recommended way to configure is using the docker-compose.yml file that can link to a directory where the worlds are stored. An example is included here. 
 
 ## Configuration
+
+Edit docker-compose.yml
+```sh
+nano /root/crownquest/docker-compose.yml
+```
 
 Configuration can be done via enviroment variables:
 
