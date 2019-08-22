@@ -7,18 +7,12 @@ spigot:
     - "25565:25565"
   environment:
     - DENOMINATION_NAME=Crw
-    - BITQUEST_ENV=production
-    - BITQUEST_NODE_USERNAME=YOUR RPC USERNAME
-    - BITQUEST_NODE_PASSWORD=YOUR RPC PASSWORD
-    - BITQUEST_NODE_HOST=127.0.0.1
+    - CROWNQUEST_ENV=production
+    - CROWNQUEST_NODE_USERNAME=YOUR RPC USERNAME
+    - CROWNQUEST_NODE_PASSWORD=YOUR RPC PASSWORD
+    - CROWNQUEST_NODE_HOST=127.0.0.1
     - ADMIN_UUID=YOUR UUID
   links:
     - redis
-    - postgres
 redis:
   image: redis
-postgres:
-  image: postgres
-  environment:
-    - POSTGRES_USER=crownquest
-    - POSTGRES_PASSWORD=ORLY
