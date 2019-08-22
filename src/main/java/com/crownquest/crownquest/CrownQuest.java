@@ -116,37 +116,20 @@ public class CrownQuest extends JavaPlugin {
   private Player[] moderators;
   public static long PET_PRICE = 100 * DENOMINATION_FACTOR;
 
-  public static final String db_url =
-      "jdbc:postgresql://"
-          + System.getenv("POSTGRES_PORT_5432_TCP_ADDR")
-          + ":"
-          + System.getenv("POSTGRES_PORT_5432_TCP_PORT")
-          + "/"
-          + System.getenv("POSTGRES_PORT_5432_TCP_DBNAME")
-          + "?ssl=true&sslmode=require";
-  public java.sql.Connection db_con;
-
   @Override
   public void onEnable() {
-    log("[startup] CrownQuest starting");
-
-    System.out.println("Checking that POSTGRES_PORT_5432_TCP_PORT envoronment variable exists...");
-    if (System.getenv("POSTGRES_PORT_5432_TCP_PORT") == null) {
-      Bukkit.shutdown();
-      System.out.println("Please set the POSTGRES_PORT_5432_TCP_PORT environment variable");
-    };
-
     try {
-      Class.forName("org.postgresql.Driver");
-      this.db_con =
-          DriverManager.getConnection(
-              this.db_url,
-              System.getenv("POSTGRES_ENV_POSTGRES_USER"),
-              System.getenv("POSTGRES_ENV_POSTGRES_PASSWORD"));
-      DBMigrationCheck migration = new DBMigrationCheck(this.db_con);
+      log("CrownQuest starting");
 
+      REDIS.set("STARTUP", "1");
+      REDIS.expire("STARTUP", 300);
       if (ADMIN_UUID == null) {
-        log("[warning] ADMIN_UUID env variable to is not set.");
+        log(
+            "Warning: You haven't designated a super admin. Launch with ADMIN_UUID env variable to set.");
+      }
+      if (STATSD_HOST != null && STATSD_PORT != null) {
+        statsd = new NonBlockingStatsDClient("crownquest", STATSD_HOST, new Integer(STATSD_PORT));
+        System.out.println("StatsD support is on.");
       }
 
       // registers listener classes
