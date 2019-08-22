@@ -115,36 +115,6 @@ public class CrownQuest extends JavaPlugin {
   private Map<String, CommandAction> modCommands;
   private Player[] moderators;
   public static long PET_PRICE = 100 * DENOMINATION_FACTOR;
-
-  public static final String db_url =
-      "jdbc:postgresql://"
-          + System.getenv("POSTGRES_PORT_5432_TCP_ADDR")
-          + ":"
-          + System.getenv("POSTGRES_PORT_5432_TCP_PORT")
-          + "/"
-          + System.getenv("POSTGRES_PORT_5432_TCP_DBNAME")
-          + "?ssl=true&sslmode=require";
-  public java.sql.Connection db_con;
-
-  @Override
-  public void onEnable() {
-    log("[startup] CrownQuest starting");
-
-    System.out.println("Checking that POSTGRES_PORT_5432_TCP_PORT envoronment variable exists...");
-    if (System.getenv("POSTGRES_PORT_5432_TCP_PORT") == null) {
-      Bukkit.shutdown();
-      System.out.println("Please set the POSTGRES_PORT_5432_TCP_PORT environment variable");
-    };
-
-    try {
-      Class.forName("org.postgresql.Driver");
-      this.db_con =
-          DriverManager.getConnection(
-              this.db_url,
-              System.getenv("POSTGRES_ENV_POSTGRES_USER"),
-              System.getenv("POSTGRES_ENV_POSTGRES_PASSWORD"));
-      DBMigrationCheck migration = new DBMigrationCheck(this.db_con);
-
       if (ADMIN_UUID == null) {
         log("[warning] ADMIN_UUID env variable to is not set.");
       }
