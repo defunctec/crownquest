@@ -49,7 +49,7 @@ You can build the crownquest Java plugin if you wantt to contibute to the code (
 
 1. Update system
 ```sh
-apt Update
+apt update
 ```
 2. Java JRE+SDK (Version 1.8) and Maven
 ```sh
