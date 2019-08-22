@@ -13,13 +13,13 @@ import java.util.Base64;
 import java.util.UUID;
 import javax.net.ssl.HttpsURLConnection;
 import javax.xml.bind.DatatypeConverter;
-import org.crownj.core.DumpedPrivateKey;
-import org.crownj.core.ECKey;
-import org.crownj.core.ECKey.ECDSASignature;
-import org.crownj.core.NetworkParameters;
-import org.crownj.core.Sha256Hash;
-import org.crownj.params.MainNetParams;
-import org.crownj.params.TestNet3Params;
+import org.bitcoinj.core.DumpedPrivateKey;
+import org.bitcoinj.core.ECKey;
+import org.bitcoinj.core.ECKey.ECDSASignature;
+import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.core.Sha256Hash;
+import org.bitcoinj.params.MainNetParams;
+import org.bitcoinj.params.TestNet3Params;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -113,7 +113,7 @@ public class Wallet {
               params = MainNetParams.get();
             }
           }
-          String check = ((org.crownj.core.ECKey) key).getPrivateKeyAsWiF(params);
+          String check = ((org.bitcoinj.core.ECKey) key).getPrivateKeyAsWiF(params);
           // System.out.println(wif.equals(check));  // true
           // creating Sha object from string
           Sha256Hash hash = Sha256Hash.wrap(msg);
