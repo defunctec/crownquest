@@ -98,7 +98,11 @@ Configuration can be done via enviroment variables:
 | POSTGRES_1_PORT_5432_TCP_PORT   | Port for the DB server                                                 |
 | POSTGRES_1_PORT_5432_TCP_DBNAME | Name of the database to be used                                        |
 
-
+# Run docker
+Run within the crownquest folder
+```sh
+docker-compose up
+```
 
 # More info
 
