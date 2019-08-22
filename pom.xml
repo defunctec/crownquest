@@ -64,8 +64,8 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>org.crownj</groupId>
-            <artifactId>crownj-core</artifactId>
+            <groupId>org.bitcoinj</groupId>
+            <artifactId>bitcoinj-core</artifactId>
             <version>0.14.7</version>
             <scope>compile</scope>
         </dependency>
