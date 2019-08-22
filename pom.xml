@@ -64,8 +64,8 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>org.crownj</groupId>
-            <artifactId>crownj-core</artifactId>
+            <groupId>org.bitcoinj</groupId>
+            <artifactId>bitcoinj-core</artifactId>
             <version>0.14.7</version>
             <scope>compile</scope>
         </dependency>
@@ -97,13 +97,21 @@
             <artifactId>json</artifactId>
             <version>20180130</version>
         </dependency>
-
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.2.4</version>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.3.0</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>
@@ -111,7 +119,6 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-junit4</artifactId>
