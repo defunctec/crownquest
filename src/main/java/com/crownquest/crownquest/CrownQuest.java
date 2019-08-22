@@ -115,15 +115,16 @@ public class CrownQuest extends JavaPlugin {
   private Map<String, CommandAction> modCommands;
   private Player[] moderators;
   public static long PET_PRICE = 100 * DENOMINATION_FACTOR;
-
   public static final String db_url =
-      "jdbc:postgresql://"
-          + System.getenv("POSTGRES_PORT_5432_TCP_ADDR")
-          + ":"
-          + System.getenv("POSTGRES_PORT_5432_TCP_PORT")
-          + "/"
-          + System.getenv("POSTGRES_PORT_5432_TCP_DBNAME")
-          + "?ssl=false&sslmode=disable";
+  public static final String POSTGRES_PORT_5432_TCP_ADDR =
+   System.getenv("POSTGRES_PORT_5432_TCP_ADDR") != null ? System.getenv("POSTGRES_PORT_5432_TCP_ADDR") : null;
+  public static final String POSTGRES_PORT_5432_TCP_PORT =
+    System.getenv("POSTGRES_PORT_5432_TCP_PORT") != null ? System.getenv("POSTGRES_PORT_5432_TCP_PORT") : null;
+  public static final String POSTGRES_PORT_5432_TCP_ADDR =
+    System.getenv("POSTGRES_PORT_5432_TCP_DBNAME") != null ? System.getenv("POSTGRES_PORT_5432_TCP_DBNAME") : null;
+  public static final String db_url =
+    System.getenv("db_url") != null ? System.getenv("db_url") : null;
+ 
   public java.sql.Connection db_con;
 
   @Override
