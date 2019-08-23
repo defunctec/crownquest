@@ -120,7 +120,7 @@ public class CrownQuest extends JavaPlugin {
    System.getenv("POSTGRES_PORT_5432_TCP_ADDR") != null ? System.getenv("POSTGRES_PORT_5432_TCP_ADDR") : null;
   public static final String POSTGRES_PORT_5432_TCP_PORT =
     System.getenv("POSTGRES_PORT_5432_TCP_PORT") != null ? System.getenv("POSTGRES_PORT_5432_TCP_PORT") : null;
-  public static final String POSTGRES_PORT_5432_TCP_ADDR =
+  public static final String POSTGRES_PORT_5432_TCP_DBNAME =
     System.getenv("POSTGRES_PORT_5432_TCP_DBNAME") != null ? System.getenv("POSTGRES_PORT_5432_TCP_DBNAME") : null;
   public static final String db_url =
     System.getenv("db_url") != null ? System.getenv("db_url") : null;
